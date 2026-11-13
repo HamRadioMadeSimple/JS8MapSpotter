@@ -1,0 +1,34 @@
+# Operator data -- never commit (also excluded from release zips)
+*.db
+*.db-wal
+*.db-shm
+*-wal
+*-shm
+ham_map_config.json
+ham_map.html
+boot.js
+js8_groups.json
+js8map_server.json
+js8map_request_token.txt
+map_window_profile/
+*.log
+crash.log
+__pycache__/
+*.pyc
+build/
+dist/
+
+# Build output (same as tools/make_release.py's exclude list)
+pkgbuild/
+installer_output/
+output/
+.buildenv/
+*.zip
+*.tar.gz
+*.tmp
+*.db-journal
+js8fastchat_intent.json
+
+# Personal: launchers and folder icons that point at the developer's own paths
+JS8Map.desktop
+desktop.ini
