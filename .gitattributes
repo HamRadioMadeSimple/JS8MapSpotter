@@ -1,0 +1,6 @@
+# Line endings: LF in the repository; Windows-only scripts stay CRLF.
+* text=auto eol=lf
+*.bat text eol=crlf
+*.iss text eol=crlf
+*.png binary
+*.ico binary
