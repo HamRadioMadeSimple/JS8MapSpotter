@@ -1,0 +1,1335 @@
+JS8Map — Version History
+==================================================
+
+NOTE ON VERSION NUMBERS -- this changelog changes schemes at the 1.6.0 line:
+  - Entries BELOW (v1.80 .. v1.83) are JS8Map's own build lineage, pre-unification.
+  - From #35 (2026-07-15) onward this changelog tracks the PRODUCT version:
+    _APP_VERSION_STR in JS8Map.py = "1.6.0" -- the same number JS8FastChat reports.
+    Both exes display and log "JS8MapChat 1.6.0".
+  - The v1.83 Linux/cross-platform work is INSIDE 1.6.0 (rolled up, not
+    superseded) -- this single JS8Map.py carries both.
+  - Companion changelog: JS8FastChat Ver 1.5\CHANGELOG.txt. See the architecture
+    doc for how the two apps fit together.
+  Scheme change is deliberate. STATUS: unification recorded, PROVEN (the exe
+  logs version : 1.6.0).
+
+─────────────────────────────────────────────────────────────────────
+JS8MAP SPOTTER Ver 1.76   build 2026-10-29e   "build_linux.sh: the file to send"
+  NEW   build_linux.sh: sh build_linux.sh  -> ~/Downloads/JS8Map_Spotter_v1.76_build_<tag>_linux.tar.gz
+        Ready-to-run package (PyInstaller, downloaded once into .buildenv);
+        users need no Python. Tested: built, installed in a clean home, ran
+        with no Python on PATH, map showed stations and the build tag.
+─────────────────────────────────────────────────────────────────────
+JS8MAP SPOTTER Ver 1.76   build 2026-10-29d   "update_linux.sh installs too"
+  CHANGE update_linux.sh works from ANY copy, e.g. the build folder:
+           cd ~/build/spotter/"Spotter Mapper Ver 1.76" && sh update_linux.sh
+         - Spotter installed: it updates the INSTALLED copy (the folder the
+           menu entry points at, else the one in ~/JS8MapSpotter), never the
+           build folder; settings, databases and token kept.
+         - Not installed yet: first install into ~/JS8MapSpotter, then
+           linux_install.sh (Python/Tk check, menu entry, desktop icon).
+         Run from the installed copy it behaves exactly as before.
+  CHANGE build_release.sh ends with the exact install command for the zip
+         it made.
+  TEST   tests/test_linux_scripts.sh: 28 checks (new L: first install from a
+         build folder; M: update the installed copy from a build folder).
+  NOTE   Program code is unchanged from 29b.
+─────────────────────────────────────────────────────────────────────
+JS8MAP SPOTTER Ver 1.76   build 2026-10-29c   "one-command release build"
+  NEW   tools/build_release.sh:  sh tools/build_release.sh   (from the program
+        folder). Checks the version and both build tags, stops if a zip with
+        this tag is already in Downloads, runs the unit tests and the Linux
+        script tests, then make_release.py -> ~/Downloads. Never asks a
+        question; stops the script tests after 10 minutes if anything hangs.
+  FIX   tests/test_linux_scripts.sh hung on a real PC (it worked in the cloud
+        box): linux_install.sh / update_linux.sh read the y/N answer from the
+        keyboard (/dev/tty) even when a test ran them, and the test hid the
+        question. They now ask only when run from a terminal; otherwise, or
+        with JS8MAP_ASSUME_NO=1 (set by the tests), the answer is "no" at once.
+        Running them by hand works exactly as before.
+  NOTE  Program code is unchanged from 29b.
+─────────────────────────────────────────────────────────────────────
+JS8MAP SPOTTER Ver 1.76   build 2026-10-29b   "filter bar fits on a small screen"
+  CHANGE  Popup (Full / Compact), New and Active moved from the filter bar
+          into Map Filters ▾, under a new "Station display" heading. Same
+          settings and behaviour; a saved Popup choice and a New / Active
+          value set before a reload still come back. The orange dot on the
+          Map Filters button now also lights when Popup is Compact or New /
+          Active is on, so a hidden filter is never forgotten.
+  CHANGE  Find box is narrow ("Find… [/]") and widens when clicked, when /
+          is pressed, or while it holds a call.
+  CHANGE  Below 1500 px wide the filter bar's spacing is a little tighter.
+          Result: the bar stays on one line at 1366 px (it wrapped in 29a).
+  NOTE    index.html changed: restart Spotter (or wait for the next map
+          rebuild); F5 alone keeps the old bar until then.
+─────────────────────────────────────────────────────────────────────
+JS8MAP SPOTTER Ver 1.76   build 2026-10-29a   "one-command Linux install and update"
+  NEW   update_linux.sh (app folder):  sh ~/JS8MapSpotter/Spotter*/update_linux.sh
+        Picks the newest JS8Map_Spotter_Ver_*_build_*.zip in ~/Downloads (or
+        the one named; never a _Windows zip), shows old -> new build, refuses
+        a zip with operator data (token / settings / .db -- e.g. 19a/19b),
+        stops if Spotter is running from that folder, renames the folder on
+        a version change (data moves with it), unzips over it, restores
+        executable marks lost on Windows, re-points menu + desktop icon.
+        Asks before going back to an OLDER build; stops if both the old and
+        the new folder names exist.
+  NEW   linux_install.sh (app folder): first-time setup for testers. Checks
+        Python 3.8+ with Tk (needed), unzip and wmctrl (recommended), shows
+        the apt command and offers to run it, checks for a Chromium-family
+        browser, restores executable marks, adds the menu entry and desktop
+        icon, prints the JS8Call settings and the update command.
+        Both scripts: POSIX sh, always started with "sh"; 21 throwaway-home
+        checks pass (fresh install with/without Tk, update from a Ver 1.2
+        folder keeping config/db/token, same build, older build, token zip,
+        running app, zip without exec marks, both folders, junk zip).
+  TEST  tests/test_linux_scripts.sh -- those 21 checks, self-contained:
+        bash tests/test_linux_scripts.sh  (builds its own zip, fake HOME in a
+        temp folder; needs unzip and zip).
+  CHANGE Back to ONE zip for Windows and Linux (operator, 2026-10-29), the
+        release script's default. --platform=windows|linux still exists.
+        README_TESTERS Linux steps now use the two scripts.
+  No program code change from 20a/19c.
+─────────────────────────────────────────────────────────────────────
+JS8MAP SPOTTER Ver 1.76   build 2026-10-20a   "version 1.76"
+  CHANGE Version 1.2 -> 1.76 (operator, 2026-10-20): Spotter is the upgrade
+        of JS8Map 1.75.1. APP_VERSION, map header, installer (AppVersion,
+        texts, JS8Map_Spotter_v1.76_Setup.exe), Linux package
+        (JS8Map_Spotter_v1.76_linux.tar.gz), build scripts, README_TESTERS.
+        Installer AppId, AppUserModelID (KW3KW.JS8MapSpotter) and the data
+        folder "JS8Map Spotter" are unchanged -- they carry no version.
+  CHANGE App folder inside the zip is now "Spotter Mapper Ver 1.76". One-time
+        move on each PC: close Spotter, rename "Spotter Mapper Ver 1.2" to
+        "Spotter Mapper Ver 1.76", unzip over it. Linux: re-run
+        tools/install_linux_launcher.sh after the rename.
+        No code change from 19c.
+─────────────────────────────────────────────────────────────────────
+JS8MAP SPOTTER Ver 1.2   build 2026-10-19c   "ready for testers"
+  TESTED (operator, Linux Mint, 19b): runs from the desktop icon; footer 19b.
+  FIX   SECURITY: the 19a and 19b zips contained js8map_request_token.txt
+        (the TX-protection secret). The 19a ServerInfo test imports
+        js8map_web, which creates the token in DATA_DIR -- the app folder
+        for a source tree -- and the folder was zipped by hand. The test now
+        removes a token it created. Operators who unzipped 19a/19b: delete
+        js8map_request_token.txt in the app folder and restart Spotter, so a
+        new private one is made.
+  NEW   tools/make_release.py -- the ONLY way to make a release zip from now
+        on. Checks the version and both build tags agree, runs the tests,
+        zips "Spotter Mapper Ver <version>" leaving out operator data
+        (*.db, config, token, boot.js, ham_map.html, logs, caches, build
+        output) and the developer's personal launchers (JS8Map.desktop,
+        desktop.ini), then re-opens the zip and refuses if any got in.
+  NEW   README_TESTERS.txt -- what it is, JS8Call API settings, Windows and
+        Linux install, first run, updating, what to send back.
+  OPEN  js8map_fastchat.py labels a FastChat hand-off "from KW3KW" when no
+        callsign is set (the wizard requires one, so not reachable in
+        practice). Fix in the FastChat phase.
+─────────────────────────────────────────────────────────────────────
+JS8MAP SPOTTER Ver 1.2   build 2026-10-19b   "group filter: diamonds and squares too"
+  TESTED (operator, Windows, 19a): FastChat now finds Spotter's live
+        database via data_dir.
+  FIX   With Groups: @GHOSTNET on, KF7MIX's station dot was hidden (not a
+        member) but his F!104 square and its line to my station stayed,
+        so the map showed a form with no station (operator, Windows). The
+        group filter now also applies to StatRep diamonds, MCForms squares
+        and their lines to my station: shown when sent to the group or the
+        sender is a member -- the same rule as the dots and the tables.
+        Changing the group, or the ✕ chip, redraws them at once.
+        _srReportsShown(); _mfLatest() filters. app.js only (F5).
+─────────────────────────────────────────────────────────────────────
+JS8MAP SPOTTER Ver 1.2   build 2026-10-19a   "tell FastChat where the database is"
+  NEW   js8map_server.json (shared mailbox) now carries "data_dir": the
+        absolute folder holding the LIVE js8_spots.db. FastChat's new
+        db_locator.py reads it first, so it never picks a stale copy (it
+        had picked a day-old database; Spotter runs from source under
+        "Build Versions\"). Body: {"port", "timestamp", "data_dir"}.
+        Older FastChat builds ignore the extra key. js8map_web.server_info();
+        new test ServerInfo (26 tests). Checked on the running app: the
+        file's data_dir holds js8_spots.db.
+─────────────────────────────────────────────────────────────────────
+JS8MAP SPOTTER Ver 1.2   build 2026-10-18f   "group chip clears at once"
+  FIX   Clicking the "👥 @AMRRON ✕" chip took ~30 s to clear the table
+        (operator, Linux, 18e): the header said Groups: Off but the chip and
+        the filtered table stayed until the next full refresh. Cause: the
+        table redraw was added to index.html's onchange, and ham_map.html
+        is only re-copied from index.html when the map is rebuilt -- after
+        a plain F5 the page kept the old onchange. The redraw is now hooked
+        up in app.js (always fresh) and the chip redraws the table itself
+        before telling the map. Tested with the old page shell: < 50 ms.
+  NOTE  Page-shell (index.html) changes reach an open map only after the
+        next map rebuild (Data Rebuild, default 1 min); app.js / app.css
+        changes reach it on F5. Keep live behaviour in app.js.
+─────────────────────────────────────────────────────────────────────
+JS8MAP SPOTTER Ver 1.2   build 2026-10-18e   "group filter reaches the tables"
+  FIX   The header group filter (Groups: @AMRRON) only filtered the map
+        dots; the StatReps, MCForms and Traffic tables ignored it (operator,
+        Linux). Now a table row stays when it was sent TO that group, or
+        its sender or receiver is a station the map counts as a member
+        (station.group_all -- same rule as the dots). A purple
+        "👥 @GROUP ✕" chip in the table bar shows the filter is on; click
+        it to turn the filter off. Changing the group redraws an open table.
+        _grpRowFilter / _grpChip / _grpClear. app.js, app.css, index.html.
+─────────────────────────────────────────────────────────────────────
+JS8MAP SPOTTER Ver 1.2   build 2026-10-18d   "Return to Map"
+  CHANGE Bold red "Return to Map" button in the header, just past the FC-8
+        button, shown only while a table is open (operator request: the
+        small "Map" button at the far right of each table bar was hard to
+        find). Those four small buttons are removed. Esc still works.
+  CHANGE Record / report / message counts removed from the StatReps,
+        MCForms and Traffic table bars (operator: no value). The tab
+        labels still carry their totals; Reference keeps "N forms loaded".
+─────────────────────────────────────────────────────────────────────
+JS8MAP SPOTTER Ver 1.2   build 2026-10-18c   "Traffic starts at All"
+  FIX   Traffic tab after other buttons showed an empty table (operator,
+        Linux, 18b): the type picked earlier (e.g. CommStat, 0 messages)
+        stayed ticked when coming back from StatReps / MCForms or reopening
+        the table. Arriving at Traffic from another tab, or opening the
+        table onto it, now starts at All types / All tags (_trEnterTab).
+        The QSOs Table button still opens on QSO only; a choice made while
+        on the Traffic tab survives the 15 s refresh. Clicked through on the
+        real page in the Linux test box (7 steps, no page errors).
+─────────────────────────────────────────────────────────────────────
+JS8MAP SPOTTER Ver 1.2   build 2026-10-18b   "Traffic: one type at a time"
+  CHANGE Traffic tab type boxes (CommStat, MCForms, QSO, Queries, JS8Call,
+        Text) are single-choice (operator request): ticking one unticks
+        the others. New "All" box shows every type; unticking the only
+        ticked box also goes back to All. Picking a type resets the tag
+        dropdown to All tags (a tag from another type left the table
+        empty). _trPickFam(). app.js only -- reload the map (F5).
+─────────────────────────────────────────────────────────────────────
+JS8MAP SPOTTER Ver 1.2   build 2026-10-18a   "relay bar can be closed"
+  TESTED (operator, Linux Mint, 17i, on the air 2026-10-18): the 17d relay
+        legs fix works -- relay feature confirmed.
+  FIX   Relay result bar ("KD9RJT got W3BFO's reply but didn't relay it
+        back") could not be closed: max-width 360px with a no-wrap message
+        pushed Switch Path and the close button off the screen. The message
+        now wraps; the buttons never shrink; close button larger.
+  FIX   A closed bar could come back: the 1 s relay poll re-drew it before
+        /relay_outcome_clear landed. The closed outcome is remembered
+        (_dismissedOutcome) and not shown again; a NEW outcome still shows.
+  FIX   Switch Path on that bar never opened its panel: it closed the bar
+        first, which wiped the saved outcome. The data is kept first now.
+  app.js / app.css only -- reload the map window (F5) to pick it up.
+─────────────────────────────────────────────────────────────────────
+JS8MAP SPOTTER Ver 1.2   build 2026-10-17i   "app folder says Ver 1.2"
+  CHANGE The app folder inside the zip is now "Spotter Mapper Ver 1.2"
+        (operator, 2026-10-17: a 1.2 zip unpacking to a "Ver 1.1" folder
+        was confusing). One-time move: close Spotter, rename the existing
+        "Spotter Mapper Ver 1.1" folder to "Spotter Mapper Ver 1.2" (its
+        settings and databases go with it), then unzip over it as usual.
+        Linux: re-run tools/install_linux_launcher.sh after the rename.
+        Rule from now on: the folder name follows APP_VERSION, and stays
+        fixed between builds of the same version. No code change.
+─────────────────────────────────────────────────────────────────────
+JS8MAP SPOTTER Ver 1.2   build 2026-10-17h   "sort the tables by header"
+  NEW   MCForms and Traffic tabs: click any column header to sort by it,
+        click again to reverse (operator request). Same look as the
+        StatReps tab (darker header, ▾/▴). Text columns start A-Z, time /
+        Freq / SNR start highest first; blanks always last; ties newest
+        first. The coloured strip sorts by form series (MCForms) or tag
+        family (Traffic). Kept through the 15 s refresh and the filters;
+        a page reload goes back to newest first. app.js only: _tblSort,
+        _tblTh, _tblSortBy, _tblSortRows.
+─────────────────────────────────────────────────────────────────────
+JS8MAP SPOTTER Ver 1.2   build 2026-10-17g   "one 1.2 build for Windows and Linux"
+  One code tree and one zip for BOTH machines from here on. Linux moves
+  from 1.1 / 17d to 1.2 with everything in 17e-17f.
+  FIX   Linux: Generate Map could raise JS8Map 1.75's map window (same
+        window class 127.0.0.1__ham_map.html). wmctrl and xdotool now also
+        require Spotter's exact map title. The title rule moved to
+        js8map_platform/common.py and Windows uses the same one.
+  CHANGE make_js8map_package.sh builds JS8Map_Spotter_v1.2_linux.tar.gz.
+        Its install.sh puts Spotter in ~/.local/lib/JS8MapSpotter with menu
+        files js8map-spotter.desktop / js8map-spotter-map.desktop and desktop
+        icon JS8Map-Spotter.desktop (the names install_linux_launcher.sh
+        uses); data folder ~/.local/share/JS8Map Spotter. JS8Map 1.75's
+        ~/.local/lib/JS8Map and js8map.desktop are no longer touched.
+        Uses Spotter's own logo, not the icon in JS8Map.desktop.
+  BUILD build_js8map_linux.sh and JS8Map_linux.spec titles say Spotter 1.2.
+  TEST  MapWindowTitle now also checks wmctrl picks Spotter's window over
+        1.75's (25 tests).
+─────────────────────────────────────────────────────────────────────
+JS8MAP SPOTTER Ver 1.2   build 2026-10-17f   "Generate Map raised Claude"
+  FIX   Windows (operator, 17e from source): Generate Map brought the
+        Claude desktop app to the front and opened no map. Cause:
+        focus_existing_map_window() treated ANY Chrome_WidgetWin_1 window
+        whose title CONTAINED "JS8Map Spotter" as the open map; Claude is an
+        Electron (Chrome-class) app and the chat was named "JS8Map Spotter
+        Linux Testing". It also matched titles ending "JS8Map" -- JS8Map
+        1.75's map window. Now the title must be exactly "JS8Map Spotter" or
+        "<CALL> · JS8Map Spotter", AND the window must belong to brave/
+        chrome/msedge/chromium.exe. New test MapWindowTitle (24 tests).
+        Linux was not affected (it matches the map's window class).
+─────────────────────────────────────────────────────────────────────
+JS8MAP SPOTTER Ver 1.2   build 2026-10-17e   "Windows: a separate product"
+  VERSION 1.1 -> 1.2 (operator, 2026-10-17): APP_VERSION, map header,
+        installer. AppUserModelID is now version-less "KW3KW.JS8MapSpotter"
+        so a pinned taskbar button survives future versions. App folder
+        inside the zip stays "Spotter Mapper Ver 1.1" so unzipping over it
+        keeps settings and databases.
+  Windows package. Same app as 17d (Linux, still 1.1) apart from below.
+  CHANGE Spotter installs ALONGSIDE JS8Map 1.75, never over it (operator
+        decision 2026-10-17): JS8Map.iss has its own AppId
+        {4D38DDDB-404F-4830-AF15-0825233B8EDF}, AppName "JS8Map Spotter",
+        version 1.2, folder Program Files\JS8Map Spotter, shortcuts
+        "JS8Map Spotter" with AppUserModelID KW3KW.JS8MapSpotter, output
+        installer_output\JS8Map_Spotter_v1.2_Setup.exe. 1.75's AppId is
+        untouched. Exe name stays JS8Map.exe.
+  CHANGE Frozen builds keep their data in their OWN folder:
+        %LOCALAPPDATA%\JS8Map Spotter (Linux ~/.local/share/JS8Map Spotter),
+        not JS8Map 1.75's "JS8Map". Settings, databases, request token,
+        map-window profile and crash.log. Source runs are unchanged (data
+        beside JS8Map.py). The FastChat mailbox stays shared on purpose.
+        runtime.DATA_FOLDER_NAME; new test DataFolder (23 tests).
+  FIX   debug.bat was LF (15a converted it); cmd.exe needs CRLF. Back to
+        CRLF, and it now falls back to the "py" launcher, then "python",
+        when KW3KW's Python 3.14 path is missing.
+  BUILD Build_JS8Map.bat: Spotter titles, checks JS8Map_icon.png, prints the
+        new installer name. Installer also copies JS8Map_icon.png.
+─────────────────────────────────────────────────────────────────────
+JS8MAP SPOTTER Ver 1.1   build 2026-10-17d   "relay legs wait for the via"
+  FIX   Relay (operator test KW3KW -> KJ4RMO> W3BFO): the map drew ONE
+        magenta line straight from my station to the target and the comet
+        ran down it first, then stopped. Cause: the via was picked before
+        its dot was on the map, so _drawChainLegs skipped leg 1 and started
+        leg 2 at my station; _chainLegs[0] was then the wrong leg and [1]
+        did not exist. Now legs are drawn only once the via's dot exists;
+        the data poll redraws them when it appears and replays the current
+        animation step. On-air frame was always correct.
+  NEW   install_linux_launcher.sh also puts a desktop icon (trusted).
+  TEST  fake_js8call.py no longer sends STATION.CALLSIGN / STATION.GRID
+        (it moved the operator's home dot to FN31PR).
+  TESTED (operator, Linux Mint, real JS8Call, 17c): connects, real grid,
+        stations and lines plotted.
+  BUILD  STATREP_BUILD / SR_PAGE_BUILD = 2026-10-17d.
+
+─────────────────────────────────────────────────────────────────────
+JS8MAP SPOTTER Ver 1.1   build 2026-10-17c   "Fit All includes reports"
+  FIX   Fit All (button / F key) only looked at station dots. Once senders
+        aged out of the station time window (e.g. "Last 30 minutes") it
+        zoomed right in on my station although StatRep diamonds / MCForms
+        squares were still on the map (StatRep window "Last 1 h"). Visible
+        diamonds and squares inside the Fit zone now count too.
+  TESTED (operator, Linux Mint, 17b): both taskbar icons show the new logo;
+        diamond line drawn in the normal view.
+  BUILD  STATREP_BUILD / SR_PAGE_BUILD = 2026-10-17c.
+
+─────────────────────────────────────────────────────────────────────
+JS8MAP SPOTTER Ver 1.1   build 2026-10-17b   "own identity + diamond lines"
+  FIX   Linux taskbar still showed the old JS8Map logo: the main window's
+        WM_CLASS was "Js8map", the same as JS8Map 1.75, so its installed
+        launcher claimed the window. Now tk.Tk(className="JS8MapSpotter")
+        -> WM_CLASS "Js8mapspotter". Windows AppUserModelID likewise
+        'KW3KW.JS8MapSpotter.1.1' (was JS8Map 1.75's).
+  NEW   tools/install_linux_launcher.sh: menu entry for JS8Map Spotter
+        (StartupWMClass=Js8mapspotter) + hidden entry for the map window
+        (StartupWMClass=127.0.0.1__ham_map.html) so both show the sharp logo
+        (Chromium gives --app windows only a 16 px page icon). --remove
+        takes them out. Old js8map.desktop is not touched.
+        make_js8map_package.sh launcher: Name / StartupWMClass updated.
+  UI    StatRep diamonds and MCForms squares get a line to my station in the
+        normal view too (thinner, fainter) -- skipped when that station's
+        own heard dot is within 10 km, since its line already shows it.
+        Only views unchanged. Legend / "?" key wording updated.
+  BUILD  STATREP_BUILD / SR_PAGE_BUILD = 2026-10-17b.
+
+─────────────────────────────────────────────────────────────────────
+JS8MAP SPOTTER Ver 1.1   build 2026-10-17a   "Linux icon + build gate"
+  FIX   Linux taskbar showed the OLD JS8Map logo: the icon search looked for
+        JS8Map.png and found the one an older JS8Map install left in
+        ~/.local/share/icons. The app's own JS8Map_icon.png now comes first,
+        and is also set before the first-run wizard opens (Linux / macOS).
+  FIX   Map window had no icon (grey in the taskbar, and a favicon 404):
+        index.html now links JS8Map_icon.png as the page icon.
+  BUILD  Build_JS8Map.bat: the #35 twin check (..\check_twins.bat) is skipped
+        with a warning when that file is not one folder up, instead of
+        aborting. Still enforced where it exists.
+  TESTED (operator, Linux Mint, from source, fake JS8Call): 22 tests OK;
+        connects; StatRep, F!104 and band-activity QSO with ack shown; SNR?
+        reaches JS8Call (TX.SET_TEXT "W1AW SNR?"); Generate Map raises the
+        existing map window.
+  BUILD  STATREP_BUILD / SR_PAGE_BUILD = 2026-10-17a.
+
+─────────────────────────────────────────────────────────────────────
+JS8MAP SPOTTER Ver 1.1   build 2026-10-15a   "cleanup + Linux prep"
+  SEC   Request token: every POST from the map page carries a secret
+        (X-JS8Map-Token, from boot.js JS8MAP_BOOT.req_token); the server
+        refuses POSTs without it (403). Stops another website open in the
+        browser from making JS8Call send / transmit. Secret kept in the data
+        folder (js8map_request_token.txt) and reused, so long sessions and
+        restarts are unaffected. /raise_window (FastChat) stays open.
+        "Access-Control-Allow-Origin: *" removed from POST / OPTIONS replies.
+        Off switch: "require_request_token": false in ham_map_config.json.
+        Design + undo: project doc "request token (TX protection)".
+  FIX   Thread safety: build_payload no longer reads store._last_lost (a
+        side channel shared between requests); the rev counter is locked.
+  PERF  Web server is threaded (a slow FCC lookup no longer stalls the
+        page's polls); POSTs still run one at a time.
+        /statrep.json?rev=: unchanged store -> {"unchanged":true} (about
+        0.3 KB instead of the full payload); full refresh at least once a
+        minute so ages and dimming keep moving.
+  LINUX All text files LF line endings (.bat/.iss stay CRLF); scripts
+        executable. New debug.sh (run from source; checks for python3-tk).
+        Crash log in ~/.local/share/JS8Map on Linux (was /tmp). Default-
+        browser fallback no longer tries os.startfile first. JS8Spotter
+        database also searched in ~/Applications, ~/.local/share, ~/bin, /opt.
+        Verified: runs from source on Linux (Python 3.12, Tk 8.6), connects,
+        decodes StatRep / F!104 / band-activity QSO, map page works.
+  TEST  tests/test_core.py -- 22 regression tests (python -m unittest
+        discover -s tests). tools/fake_js8call.py -- stand-in JS8Call API
+        for testing without a radio; logs what would have been sent.
+  CLEAN Unused imports removed from JS8Map.py (about 70) and js8map_statrep;
+        dead app.js constants and setFilter() removed; form files closed
+        after reading. FastChat / relay code untouched.
+  BUILD  STATREP_BUILD / SR_PAGE_BUILD = 2026-10-15a.
+
+─────────────────────────────────────────────────────────────────────
+JS8MAP SPOTTER Ver 1.1   build 2026-10-14s   "StatRep box fits"
+  FIX   With the "?" key open the StatRep box grew up under the filter bar and
+        its top was cut off. The box is now capped to the space below the
+        filter bar (_srPlace sets max-height); column layout keeps the header
+        and footer fixed while the key and the report list scroll inside.
+  BUILD  STATREP_BUILD / SR_PAGE_BUILD = 2026-10-14s.
+
+─────────────────────────────────────────────────────────────────────
+JS8MAP SPOTTER Ver 1.1   build 2026-10-14r   "explain solid vs dashed"
+  UI    Legend regrouped: station items, then STATREPS & MCFORMS (pin colors,
+        corner dot, and "Lines to my station (Only views)": solid = grid sent
+        in the report, dashed = approx., no grid sent -- last heard / FCC),
+        then QSOs (badge, QSO line).
+        StatRep box "?" key: Dashed and Square entries reworded, new
+        "Lines to my station" section (solid / dashed, colour, hover = distance).
+  BUILD  STATREP_BUILD / SR_PAGE_BUILD = 2026-10-14r.
+
+─────────────────────────────────────────────────────────────────────
+JS8MAP SPOTTER Ver 1.1   build 2026-10-14q   "QSOs follow the time window"
+  FIX   QSO messages in the station popup were always the last 7 days and the
+        💬 badges / lines always the last hour, whatever the time-window
+        dropdown said. Both now follow it (Last 1 h ... Last 2 days):
+          /qso.json?call=X&hours=H  -> query_qso(call, days=H/24)
+          /qso_active.json?minutes=H*60
+        Changing the dropdown re-polls the badges at once; the popup heading
+        reads "💬 QSO Messages (n) — last 1 h" etc. Legend / tooltips say
+        "in the time window" instead of "last hour".
+  BUILD  STATREP_BUILD / SR_PAGE_BUILD = 2026-10-14q.
+
+─────────────────────────────────────────────────────────────────────
+JS8MAP SPOTTER Ver 1.1   build 2026-10-14p   "map tools in the header"
+  UI    Map Filters ▾, Fit All and Box moved from the filter bar up into the
+        header (right side, beside the logo) so the filter bar fits on one
+        line at 1910 px with room to spare. Same ids / handlers.
+        The filter bar now wraps to a second row instead of cutting off on
+        narrow screens; in the header the grid/version text shortens first
+        (… ellipsis) and the stat labels stay on one line.
+  BUILD  STATREP_BUILD / SR_PAGE_BUILD = 2026-10-14p.
+
+─────────────────────────────────────────────────────────────────────
+JS8MAP SPOTTER Ver 1.1   build 2026-10-14o   "toolbar option A"
+  UI    Filter bar regrouped (option A from the mockup): three boxes,
+        📋 COMMSTAT · 📝 MCFORMS · 💬 QSOs, each with the same three buttons:
+          ✓ Show  layer on/off (green outline when on)
+          Only    filter the map to just that (lit + map edge: amber/blue/teal)
+          📊 Table open that tab (press again to close)
+        Replaces StatReps On / CommStat Only / MCForms Only / QSOs On /
+        StatRep Table.
+  NEW   MCForms has its own Show switch (_mfOn) -- the StatReps switch now only
+        controls the diamonds. The StatRep box shows whichever layers are on.
+  NEW   QSO Only view (SR_VIEW 'qso'): only stations in a QSO in the last hour
+        (window._QSO_CALLS, refreshed every 20 s) with their QSO lines; their
+        ordinary heard/hearing lines, diamonds, squares and the StatRep box
+        are hidden. Fits the map to them.
+  NEW   QSO Table opens the Traffic tab filtered to QSO messages.
+  BUILD  STATREP_BUILD / SR_PAGE_BUILD = 2026-10-14o.
+
+─────────────────────────────────────────────────────────────────────
+JS8MAP SPOTTER Ver 1.1   build 2026-10-14n   "time window choices"
+  UI    StatRep box / table time-window dropdown (all three copies share the
+        new SR_WINDOWS list): Last 1 h (default), 2 h, 4 h, 8 h, 12 h, 24 h,
+        2 days. Was 6 h / 24 h / 3 days / 7 days / 30 days, default 3 days.
+        A remembered choice no longer on the list falls back to 1 h.
+        Stored history is still kept 30 days (traffic log 7 days).
+  BUILD  STATREP_BUILD / SR_PAGE_BUILD = 2026-10-14n.
+
+─────────────────────────────────────────────────────────────────────
+JS8MAP SPOTTER Ver 1.1   build 2026-10-14m   "QSO button + popups that fit"
+  UI    "💬 QSOs On/Off" moved from the Map Filters menu to the filter bar
+        (after MCForms Only); teal outline when on.
+  POPUP Every popup (stations, StatReps, MCForms):
+          - body capped to the map height and scrolls inside, so the whole box
+            is always on screen
+          - map pans it clear of the header and of the StatRep box
+          - grab bar on top: drag the box anywhere (Leaflet L.Draggable moves
+            only the container; never popup.update(), which would wipe QSO
+            messages). After a drag the tip is hidden, it stays put through
+            map pans/zooms, and it snaps back to its station on next open.
+  BUILD  STATREP_BUILD / SR_PAGE_BUILD = 2026-10-14m.
+
+─────────────────────────────────────────────────────────────────────
+JS8MAP SPOTTER Ver 1.1   build 2026-10-14l   "acks under QSO messages"
+  POPUP  Each message in 💬 QSO Messages shows the ack that answered it as a
+        small green line: "✓ KA1MF acked · 21:20". Matched as an ACK from the
+        recipient back to the sender, after the message and before the
+        sender's next message to that station (max 15 min). Each ack used once.
+        Acks still never appear as messages of their own.
+  FIX   Ack duplicate window is 90 s (was 10 min): acks repeat word for word
+        ("WA8WQU ACK" for every message), so the second real ack was dropped.
+  BUILD  STATREP_BUILD / SR_PAGE_BUILD = 2026-10-14l.
+
+─────────────────────────────────────────────────────────────────────
+JS8MAP SPOTTER Ver 1.1   build 2026-10-14k   "no repeated QSO messages"
+  FIX   The same message showed twice ('... 73<T' and '... 73<T J34'). Late
+        frames on an offset were glued onto a message already logged as
+        complete, so it was logged again with the extra text, and the
+        duplicate check only caught identical text.
+          - after a message is logged, the next frame on that offset starts
+            a new message (feed_activity)
+          - add_traffic: same sender within 10 min, text that only extends
+            (or is cut short of) an entry already logged = same message;
+            the entry is updated to the longer text, nothing new inserted
+          - query_qso hides older, shorter copies already in the database
+  BUILD  STATREP_BUILD / SR_PAGE_BUILD = 2026-10-14k.
+
+─────────────────────────────────────────────────────────────────────
+JS8MAP SPOTTER Ver 1.1   build 2026-10-14j   "QSOs on the map"
+  MAP   💬 badge on every station that exchanged real QSO text or a stored MSG
+        in the last hour; teal dashed line between the two ends of a QSO when
+        both are on the map (tooltip: who, how many messages, how long ago).
+        Older than 15 min = dimmer. Click a badge to open that station's
+        popup. Toggle in Map Filters ▸ 💬 QSO On/Off (remembered). Legend rows
+        added. Data: /qso_active.json (StatRepStore.query_qso_active), same
+        rules as the popup -- no CQ / SNR / acks / heartbeats / garble.
+  POPUP  Callsigns in 💬 QSO Messages are links: jump to that station and open
+        its popup WITHOUT filtering the map (unlike Find callsign). Not on the
+        map -> shown at its FCC address. My own call and @groups stay plain.
+  BUILD  STATREP_BUILD / SR_PAGE_BUILD = 2026-10-14j.
+
+─────────────────────────────────────────────────────────────────────
+JS8MAP SPOTTER Ver 1.1   build 2026-10-14i   "QSOs between other stations"
+  FIX   QSOs between OTHER stations never reached the popup / Traffic log.
+        JS8Call only sends RX.DIRECTED for traffic to me or my groups; all
+        other directed traffic arrives as RX.ACTIVITY frames, which the sink
+        only kept when they were a StatRep or form. StatRepSink.feed_activity
+        now logs EVERY band-activity message once complete:
+          - complete = frame ends with JS8Call's end-of-message diamond (any
+            trailing non-ASCII; it arrives mangled as 'Ã\x83' through the API)
+          - backup: a new 'CALL: ' message on the same offset flushes the
+            previous one if its end marker was missed
+        Tagged like RX.DIRECTED traffic (QSO / MSG / Heartbeat / garble ...)
+        and de-duplicated against it (same sender + text within 10 min).
+  FIX   Frames are joined exactly as sent (no added space). JS8 splits frames
+        mid-word: 'WORK. I' + 'T MAKES' now reads 'IT MAKES'. Also keeps
+        StatRep status digits intact when split across frames.
+  BUILD  STATREP_BUILD / SR_PAGE_BUILD = 2026-10-14i.
+
+─────────────────────────────────────────────────────────────────────
+JS8MAP SPOTTER Ver 1.1   build 2026-10-14h   "new logo"
+  LOGO  New JS8Map Spotter logo (option B2 from the mockups): white spotting
+        scope on a bright teal grid tile (#14b8d4 -> #0b5a78), gold signal
+        arcs, red centre dot. Replaces the contents of JS8Map_icon.png (256 px,
+        transparent corners) and JS8Map_icon.ico (16/24/32/48/64/128/256, each
+        size rendered separately), so the window icon, exe icon, installer and
+        the map header pick it up with no code changes. Source drawing kept as
+        JS8Map_Spotter_logo.svg.
+  FIX   Map header text still said "Spotter Mapper Ver 1.1" (hard-coded in
+        index.html with &nbsp; spacing) -- now "JS8Map Spotter Ver 1.1".
+  BUILD  STATREP_BUILD / SR_PAGE_BUILD = 2026-10-14h. Rebuild the .exe to see
+        the new icon on JS8Map.exe and in Explorer.
+
+─────────────────────────────────────────────────────────────────────
+JS8MAP SPOTTER Ver 1.1   build 2026-10-14g   "rename + QSO messages"
+  NAME  APP_NAME "JS8Map Spotter" (was "Spotter Mapper"). Map page title is
+        "<CALL> · JS8Map Spotter"; js8map_platform/windows.py now finds the map
+        window by "JS8Map Spotter" in its title (still accepts the old
+        "... JS8Map" ending). Folder, exe, data folder and DB names unchanged.
+  NEW   Station popup (classic callsign popup) shows "💬 QSO Messages": typed
+        conversation to or from that station in the last 7 days, newest first,
+        from the tagged traffic log via /qso.json. Leaves out CQ, SNR, acks,
+        heartbeats, queries, StatReps and forms. Stored MSG shown with a MSG
+        tag. Messages to my station have a red edge.
+  TAGS  New QSO tag (family qso) for typed text and GARBLE tag for decode junk
+        ('AAAAAAAA' -- a run of 5+ same letters, or one letter >= 60% of the
+        text). Ack = message made only of ack words (RR, 73, TNX, QSL ...), so
+        "TNX FOR THE QSO 73" is a QSO message. Traffic tab gets a QSO filter.
+  CHG   MCForms "Sent" is now "Form dated" -- the #XXXX code is when the sender
+        filled in the form; JS8Spotter re-sends stored forms unchanged. Shows
+        "· N days before heard" when it is a day or more older.
+  BUILD  STATREP_BUILD / SR_PAGE_BUILD = 2026-10-14g.
+
+─────────────────────────────────────────────────────────────────────
+SPOTTER MAPPER Ver 1.1   build 2026-10-14f   "ocean teal"
+  UI   Navy palette (14c/14e) replaced by Ocean Teal, chosen from a 3-option
+       mockup. Map header: #06303f -> #0b4f66 gradient, filter bar #0e6280,
+       controls #08394b, outlines #22a3c4, hover #67e8f9, aqua accent line
+       #2dd4bf under the filter bar. Python windows (js8map_theme.py):
+       BG #072f3e, panels #0d5570, fields #062633, borders #22a3c4, action
+       buttons #0891b2, maintenance buttons #08394b with #67e8f9 text.
+       Map itself unchanged.
+  BUILD  STATREP_BUILD / SR_PAGE_BUILD = 2026-10-14f.
+
+─────────────────────────────────────────────────────────────────────
+SPOTTER MAPPER Ver 1.1   build 2026-10-14e   "navy map header"
+  UI   Map page header (#topbar) and filter bar (#filterbar) use the same
+       navy palette as the Python windows / FCC Lookup: header #16213e,
+       filter bar #0f3460, buttons #0b2a50, borders #2a5486. Done by re-setting
+       the palette variables on those two elements, so every button, stat box,
+       dropdown, search box and the Map Filters menu follow. Navy in both Light
+       and Dark map modes; the map itself is unchanged. _applyStatStyle always
+       uses the dark-header highlight.
+  BUILD  STATREP_BUILD / SR_PAGE_BUILD = 2026-10-14e.
+
+─────────────────────────────────────────────────────────────────────
+SPOTTER MAPPER Ver 1.1   build 2026-10-14d   "fit all on leaving a filter"
+  MAP  Turning CommStat Only / MCForms Only off (or StatReps Off while one is
+       on) now returns the map to the Fit All view.
+  BUILD  STATREP_BUILD / SR_PAGE_BUILD = 2026-10-14d.
+
+─────────────────────────────────────────────────────────────────────
+SPOTTER MAPPER Ver 1.1   build 2026-10-14c   "mcforms only + navy windows"
+  MAP  New "📝 MCForms Only" button beside CommStat Only. The two are now
+       exclusive views (window.SR_VIEW = '' | 'commstat' | 'mcf'):
+         CommStat Only -- StatRep diamonds only (form squares hidden)
+         MCForms Only  -- form squares only (diamonds hidden), lines to my
+                          station in each form's series color, blue map edge
+       Both hide the regular station dots/labels/lines (SR_ONLY) and fit the
+       map to their sites; the StatRep box lists only what the view shows.
+       Old 'sr_only' session setting is carried over as CommStat Only.
+  UI   Python windows (main window, StatReps…, Map Detail, dialogs, wizard)
+       switched to a navy palette matched to FCC Lookup: BG #16213e, panels
+       #0f3460, fields #0b2a50, borders #2a5486, small buttons #1e3a5f.
+       Map page colours unchanged.
+  BUILD  STATREP_BUILD / SR_PAGE_BUILD = 2026-10-14c.
+
+─────────────────────────────────────────────────────────────────────
+SPOTTER MAPPER Ver 1.1   build 2026-10-14b   "map filters menu"
+  UI   New "🗺 Map Filters ▾" menu at the left of the filter bar holds the
+       set-once display toggles: Light/Dark Map, Hide/Show Labels,
+       Hide/Show Names, Anim On/Off. Buttons keep their ids and handlers;
+       menu stays open for several clicks, closes on outside click / Esc.
+       Orange dot on the menu button = something changed from default.
+  BUILD  STATREP_BUILD / SR_PAGE_BUILD = 2026-10-14b.
+
+─────────────────────────────────────────────────────────────────────
+SPOTTER MAPPER Ver 1.1   build 2026-10-14a   "mcforms + traffic tags"
+  NEW  MCForms (JS8Spotter / SitRepNet micro forms, 'F!309 ...') decoded live
+       from JS8Call -- JS8Spotter no longer needs to run. New js8map_forms.py:
+       reads the MCF*.txt form files (34 bundled in forms/; drop new or revised
+       ones into %LOCALAPPDATA%\JS8Map\forms, picked up within 30 s), decodes
+       one-character answers, XX[...] fields and the #MDHm send-time code, and
+       flags cut-short / wrong-version reports. Stored raw in js8map_statrep.db
+       table mcform and decoded when served, so a newer form file re-decodes.
+  NEW  Traffic log: every RX.DIRECTED message gets one tag (CommStat StatRep /
+       Alert / Ack, MCForm, form request, Heartbeat, SNR, Grid, Query, MSG ...)
+       in table traffic, kept 7 days. JS8Call's CMD field now passed to the sink.
+  MAP  Form squares (form number, series color; dashed = no grid in the form,
+       placed at the sender; amber ring = decode problem) with a decoded popup.
+       StatRep box lists the latest MCForms. Table view has tabs:
+       StatReps · MCForms · Traffic · Reference (every form's questions and
+       codes, StatRep categories, tag meanings -- /mcforms.json).
+  CHG  JS8Spotter import is optional and OFF for new installs (existing
+       settings kept). PARSER_REV 4 -> JS8Spotter history re-read once for F!.
+  BUILD  STATREP_BUILD / SR_PAGE_BUILD = 2026-10-14a. Specs pack forms/*.txt.
+
+─────────────────────────────────────────────────────────────────────
+SPOTTER MAPPER Ver 1.1   (built on JS8Map 1.75.1)   "commstat-statreps"   2026-10-09
+  RENAMED: APP_NAME "Spotter Mapper", APP_VERSION "1.1" (js8map_runtime.py) --
+  window titles, setup wizard, main-window header and map page header follow.
+  Map page <title> is "Spotter Mapper · JS8Map" so the Windows focus check
+  (title ends with "JS8Map") still finds the map window.
+  DELIBERATELY UNCHANGED (contracts / user data): JS8Map.exe and .spec/.iss
+  names, %LOCALAPPDATA%\JS8Map data folder, js8_spots.db, the
+  "JS8MapChat Shared" mailbox folder FastChat resolves, module filenames.
+
+  NEW  CommStat StatReps on the map, fed from two places into one store:
+    - LIVE from JS8Call: the client hands every RX.DIRECTED frame (groups
+      you are in) and RX.ACTIVITY frame (groups you are NOT in -- the same
+      path CommStat uses) to js8map_statrep.StatRepSink. Multi-frame
+      RX.ACTIVITY messages are reassembled per audio offset.
+    - HISTORY from JS8Spotter: JS8SpotterImporter reads js8spotter.db
+      READ-ONLY (sqlite ?mode=ro) every 30 s and picks up StatRep / alert /
+      RRSR rows, including ones logged while JS8Map was closed. Columns are
+      found by NAME (activity.value / call / spotdate ...), so a JS8Spotter
+      update that reorders columns keeps working. A per-path watermark means
+      each poll reads only new rows; a cleared JS8Spotter log restarts it.
+    Parsed formats (from CommStat's own source):
+      StatRep  CALL: @GRP ,GRID,SCOPE,SRID,STATUS12,REMARKS,{&%}
+               {&%3} internet copy, {F%} forwarded, STATUS12 '+' = all green
+      Alert    CALL: @GRP ,ID,COLOR,TITLE,MESSAGE,{%%}   (old no-ID form too)
+      Ack      CALL: @GRP RRSR TARGET,SRID
+    Same report from both feeds (or a backbone copy) is stored ONCE:
+    same call + SRID + status within 12 h = duplicate; 'sources' lists both.
+
+  STORE  js8map_statrep.db in the data folder -- deliberately NOT
+    js8_spots.db. QSY / Clear Map / "Clear All Lists" wipe js8_spots.db, and
+    that file is FastChat's read contract. 30-day retention.
+
+  MAP  📋 StatReps On/Off button in the filter bar. Diamond per reporting
+    station (latest report), colored by the sender's Map Pin status; a small
+    corner dot when another category is worse than the pin; dashed outline =
+    approximate position. Popup: 12-category grid, remarks, scope, sent-to
+    group, received time, heard via, freq/SNR, forwarded-by, RRSR acks,
+    earlier reports. Board under the zoom buttons: alerts first, then
+    stations worst-first with their 12-cell strip; click to fly there.
+    Window: 6 h / 24 h / 3 d / 7 d / 30 d. Toast on each NEW report/alert.
+    Endpoint: GET /statrep.json?hours=N, POST /statrep_import.
+
+  POSITION  The report's own grid always wins (it is what the operator chose
+    to share). Blank/invalid grid -> last grid JS8Map heard for that call ->
+    FCC address (marked approximate) -> listed on the board as "📍?".
+
+  UI  📋 StatReps… button on the maintenance row (beside Map Detail -- the
+    settings card cannot grow on a 13" laptop). JS8Spotter path + Browse /
+    Find, import on/off, "JS8Spotter times are UTC / local", Save & Import
+    now, Clear stored… Config keys: js8spotter_db_path, js8spotter_import,
+    js8spotter_time. Blank path = background search once at startup.
+
+  BOARD PLACEMENT (follow-up): StatRep board docked bottom-right directly
+    above the Legend tab, riding up above the legend panel when it is open.
+    − / + button (or click the header) minimizes it to a one-line bar of
+    counts; state remembered for the session. Window selector and JS8Spotter
+    status are pinned below the scrolling list.
+
+  STATREP TABLE (follow-up): 📊 StatRep Table button (filter bar, and Table
+    in the board footer) opens a CommStat-style view over the map: one row
+    per report -- local date/time (UTC on hover), freq, from, to, ID (+ ack
+    count), grid, scope, the 12 colored status columns (! = yellow/red,
+    ? = unknown), remarks, heard via. Severity bar on the left. Filters:
+    Issues only (hides all-green), group, time window, callsign search;
+    click any header to sort. Esc or 🗺 Map returns to the map.
+    Clicking a callsign switches to the map and flies to that licensee's
+    FCC address (GET /fcc_locate.json?call=X -> HamMapApp._fcc_locate:
+    geocoded address, else ZIP area, else state centre), with a 📍 pin,
+    the FCC name/city/class above the report popup, and a dashed line to
+    the report's own grid when they are >15 km apart. Not in the FCC DB ->
+    falls back to the report grid and says so.
+
+  INCOMPLETE TRAFFIC (follow-up, from the operator's real js8spotter.db):
+    JS8Call writes '……' (U+2026) for undecoded frames; JS8Spotter stores it
+    repeatedly mis-encoded ('ÃÂÃÂ…'). unwind_mojibake()/lost_frames() detect it.
+    - PARTIAL StatRep: start decoded, tail + {&%} lost, but grid/scope/ID/12-digit
+      status intact -> stored with partial=1, shown 'INCOMPLETE'. A later full
+      copy replaces the cut-short remarks. (Real case: KN4LEX N28.)
+    - LOST group messages ('@AMRRON ……') -> table statrep_lost.
+    - RRSR acks with no matching report -> 'acked, not heard here'; matched to
+      a lost message from the same call <=15 min earlier -> 'lost on the air'.
+    Board + table show a 'Heard but incomplete' list; click -> FCC address (or,
+    if not in the FCC DB, the last grid heard) with an 'AGN?' hint.
+    Also learned: JS8Spotter's db is in WAL mode -- recent rows live in
+    js8spotter.db-wal until checkpoint; SQLite reads both, a file copy of
+    js8spotter.db alone looks days stale.
+
+  COLOR KEY (follow-up): '?' button on the StatRep board opens a key --
+    status colors, what the four header counts mean (stations by worst
+    category: red/yellow/green/gray, now shown as colored dots), the 12-cell
+    strip order, diamond / corner dot / dashed outline, and the ✓N,
+    INCOMPLETE and lost ×N tags. Also: PARSER_REV in js8map_statrep.py --
+    bump it when parse rules change and the next import re-reads
+    JS8Spotter's history (de-duplicated, nothing lost). STATREP_BUILD /
+    SR_PAGE_BUILD shown in the board footer.
+
+  COMMSTAT ONLY VIEW (follow-up): '🛰 CommStat Only' filter-bar toggle hides
+    every regular station dot, label and heard/hearing line (an extra check in
+    applyFilters, so live arrivals stay hidden too), shows the call tag under
+    each StatRep diamond, and zooms to fit the StatRep sites. Amber edge on the
+    map while active; remembered for the session; off restores all filters.
+
+  COMMSTAT ONLY lines (follow-up): in that view each StatRep site draws its own
+    line to my station (the station layer's lines are hidden with it), colored
+    by the report's worst status, dashed if the position is approximate; hover
+    for distance in miles. Not drawn in the normal view (would double up).
+
+  NEVER TRANSMITS. No auto-RRSR ack from JS8Map -- that stays CommStat's job.
+
+  FILES  NEW js8map_statrep.py.  CHANGED JS8Map.py, js8map_client.py,
+    js8map_web.py, js8map_buildui.py, js8map_runtime.py, app.js (appended
+    block), app.css (appended block), index.html (button + legend rows).
+    No .spec / build-script change needed: the new module is found by
+    import analysis, and the web changes live in files already bundled.
+    REBUILD the exe (Python changed).
+
+  TESTED HERE (not yet on the operator's station): parser on the real
+    screenshot traffic; fake JS8Spotter DB (duplicate profile rows, mojibake
+    end-of-message diamonds, blank grid); fake JS8Call TCP feed through the
+    real HamMapApp under Xvfb; map + popup + light theme + narrow window in
+    Chromium; StatReps survive clear_spots(); locked js8spotter.db retries.
+    STILL TO DO live: confirm JS8Spotter's 'spotdate' is UTC on a real
+    install (toggle in the StatReps window if times look 4-5 h off).
+
+─────────────────────────────────────────────────────────────────────
+Current version: 1.6.0   (2026-07-15)   "shared-resolver"
+  #35 is an internal refactor, not a version bump -- APP_VERSION stays "1.6.0"
+  and the shared_resolve.log line still reads  version : 1.6.0  frozen=True.
+
+  *** MILESTONE (#35 CLOSED): JS8Map's shared-dir resolver and JS8FastChat's are
+      now ONE algorithm. Both apps proven frozen, launched from their DESKTOP
+      SHORTCUTS, resolving the SAME mailbox character-for-character. ***
+
+  CHANGE (#35) JS8Map's shared-folder resolver and FastChat's were two divergent
+    copies of the "same" algorithm -- reversed env-var precedence, different
+    walk-up anchor counts (JS8Map 4, FastChat 2), a legacy pointer-file step only
+    JS8Map had (js8map_writer_path.txt), and different last-resort return types.
+    Called "identical" for weeks; they were not (architecture doc, H6). Two copies
+    of a contract edited by two separate programs is the shape of nearly every bug
+    in this project.
+
+    THE MERGE: the search ALGORITHM now lives in ONE module, shared_resolver.py,
+    placed as TWO byte-identical twins -- one beside JS8Map.py, one in
+    js8fastchat\. A build-time hash-gate (check_twins.bat, called by both build
+    scripts) REFUSES TO BUILD if the two copies differ, so they cannot drift
+    unnoticed. JS8Map keeps only a THIN ADAPTER (JS8Map.py:205-237) that hands the
+    resolver its own four anchors (_EXE_DIR, _APP_DIR, _DATA_DIR, cwd) and
+    preserves JS8Map's contract EXACTLY: _fc_shared_dir_impl() still returns
+    (path_str, rule), path '' on total failure, so the public _fc_shared_dir()
+    wrapper, its #42 logging, and all 7 call sites (which do `... or _DATA_DIR` /
+    `if not shared`) are UNCHANGED.
+
+  IMPORT NOTE -- JS8Map was NOT bitten by the frozen-import bug that hit FastChat
+    this session. JS8Map imports the twin DOTLESS (JS8Map.py:217,
+    `import shared_resolver`) and that is CORRECT: JS8Map is a FLAT FOLDER, not a
+    package, so the twin sits on sys.path. (FastChat's copy lives inside the
+    js8fastchat package and needed `from .shared_resolver ...`; that one-dot fix
+    is FastChat's, commit c9f0322.) DO NOT ADD THE DOT HERE -- it re-breaks
+    JS8Map. Proven: JS8Map's exe launched clean from its shortcut and logged the
+    right SHARED DIR, twice, this session.
+
+  VERIFIED (2026-07-15) -- do not re-test:
+    - JS8Map.exe rebuilt 12:22 local on the merged resolver; launched FROZEN from
+      its desktop shortcut, map generated first (a resolver test with no map has
+      no server and no data -- invalid).
+    - Both apps FROZEN from DESKTOP SHORTCUTS, callsign clicked -> FastChat popup
+      -> grid query TRANSMITTED. Both shared_resolve.log read side by side,
+      identical SHARED DIR:
+          [JS8Map]   16:25:20 UTC  SHARED DIR = ...\JS8MapChat Shared Ver 1.5  frozen=True
+          [FastChat] 16:41:57 UTC  SHARED DIR = ...\JS8MapChat Shared Ver 1.5  frozen=True
+
+    ** SCOPE OF THE PROOF: this proves agreement in ONE layout -- sibling folder,
+    this machine, the walk-up rule firing for both. It does NOT prove the
+    resolvers agree on a stranger's machine (Program Files, or one env var set),
+    where a DIFFERENT rule fires. "Proven in the realistic layout," not
+    "proven everywhere."
+
+  GIT: the shared merge is commit c9f0322, tagged v1.6.0-35-shared-resolver-proven
+    (the repo-wide tag covering both apps; JS8Map's adapter edit is part of it).
+    ROLLBACK: git checkout v1.6.0-both-frozen-proven (pre-#35 entirely) or
+    v1.6.0-35-shared-resolver-proven (this proven state).
+
+  KNOWN COSMETIC (not fixed, noted): Build_JS8Map.bat (renamed from Build_JS8Map_v1.83.bat) prints
+    Invalid switch - "i".  where it tries to echo the exe timestamp. The build
+    itself is fine; read freshness off disk instead:  dir "...\dist\JS8Map.exe".
+    Its own small ticket (shared with FastChat's build script).
+
+─────────────────────────────────────────────────────────────────────
+1.6.0   "version-free-folder"   (#38)
+  A 1.6.0 companion to the "shared-resolver" (#35) milestone above; shipped
+  as part of the same unification. Code present in the shipped tree,
+  HEAD-verified this session at the lines cited. Documentation only -- no
+  code change here.
+
+  CHANGE (#38) The shared-mailbox folder name is now VERSION-FREE. Canonical
+    name 'JS8MapChat Shared'; the legacy 'JS8MapChat Shared Ver 1.5' is still
+    ACCEPTED, in priority order (JS8Map.py:191-192, _FC_SHARED_DIR_NAMES).
+    An existing install keeps working with no rename by the operator.
+
+  WHY In v1.5 the two apps agreed on the mailbox by string-matching a folder
+    name with the version baked in ('...Ver 1.5'). That made a version bump a
+    BREAKING CHANGE to the contract between two separately built programs:
+    rename the folder, bump one app's constant but not the other's, and the
+    handoff dies -- silently, in a --noconsole build. Taking the version out
+    of the name means the next bump never touches the contract.
+    (JS8Map.py:174, "v1.6: THE VERSION IS OUT OF THE FOLDER NAME.")
+
+  DEAD CONSTANT (deliberate) _FC_SHARED_DIR_NAME = 'JS8MapChat Shared'
+    (JS8Map.py:184) is read by NOTHING and creates the folder from NOTHING.
+    Kept only so no stale import can break. When the sibling shared folder is
+    absent the per-user mailbox is used; JS8Map never creates a sibling.
+
+  MIRRORS FastChat's parallel folder-name contract -- its accepted-names list
+    must stay identical (verify_shared_dir.py asserts it; the twin hash-gate,
+    check_twins.bat, enforces the shared_resolver.py copy).
+
+─────────────────────────────────────────────────────────────────────
+1.6.0   (audit closed 2026-07-16)   "datadir-fix"   (#40)
+  Partial _DATA_DIR->shared moves shipped inside 1.6.0; this session AUDITED
+  the remainder and confirmed BOTH sides. No code change resulted -- the
+  finding was that the write side was already correct. NOT a "reorg done"
+  claim; this is an audit closure. (Companion to FastChat's own 1.6.0
+  "datadir-fix" block.)
+
+  CHANGE (#40) Three cross-app handoff files moved from JS8Map's per-user
+    _DATA_DIR to the SHARED mailbox, resolved shared-first (tagged
+    "v1.6: was _DATA_DIR"):
+    - js8fastchat_intent.json     (JS8Map.py:4104)
+    - js8map_raise_fastchat.json  (JS8Map.py:4145)
+    - js8map_server.json          (JS8Map.py:4291)
+    each os.path.join(_fc_shared_dir() or _DATA_DIR, ...). WHY: in SCRIPT
+    mode _DATA_DIR is JS8Map's source folder, which FastChat's poller does
+    not search, so the handoff only ever worked from the frozen .exe. The
+    shared folder works in both modes and in the installed build.
+
+  AUDIT (2026-07-16, HEAD-verified) Walked all 33 _DATA_DIR uses in
+    JS8Map.py. RESULT: every file that crosses the app boundary already
+    resolves shared-first (the three above, plus the outgoing-TX publish and
+    the TX-pending lease, and the read of FastChat's js8fastchat_alive.json).
+    Every REMAINING _DATA_DIR use is genuinely JS8Map-PRIVATE and correctly
+    stays per-user: js8_spots.db, js8_relay.db, js8_groups.json,
+    ham_map_config.json, the ham_map.html render output, tx_shadow.log,
+    map_window_profile, the app icon, and the debug logs. No cross-app file
+    is stranded on the per-user folder. The "#40 ZERO ROWS" failure does NOT
+    occur in the shipped build.
+
+  FALLBACK IS SAFE, NOT A BUG The 'or _DATA_DIR' fallback fires only if
+    _fc_shared_dir() returns '' (total resolver failure). Even then, in the
+    frozen build FastChat still finds the file: intent_poller._search_dirs()
+    -> _newest_existing() searches the resolved shared dir, the per-user
+    mailbox %LOCALAPPDATA%\JS8MapChat\Shared (ALWAYS), and legacy
+    %LOCALAPPDATA%\JS8Map (a frozen JS8Map's _DATA_DIR), and takes the
+    NEWEST copy (FastChat's #34 stale-shadow fix). Confirmed by reading
+    FastChat's poller this session.
+
+  KNOWN LIMITATION (dev-only, never shipped) The single uncovered corner is
+    SCRIPT mode AND resolver-empty at once: there _DATA_DIR is JS8Map's
+    source folder, which the poller does not search, so a fallback write
+    would be missed. This cannot happen in the frozen / installed product.
+    Not fixed; documented.
+
+  SCOPE (mirrors #35's scope note) #40 is proven for the REALISTIC layouts
+    on both the write (JS8Map) and read (FastChat) sides -- "proven in the
+    realistic layout," not "proven on every possible machine."
+
+  GIT No code change from the audit; the moved-file code is part of the
+    shipped 1.6.0 tree (HEAD-verified at the lines above). This changelog
+    entry is the deliverable.
+
+─────────────────────────────────────────────────────────────────────
+Previous version: v1.83
+  Version bump for backup separation. Changelog moved to CHANGELOG.txt
+  (no longer embedded in JS8Map.py — saves ~5,500 tokens per session).
+  FEATURE Cross-platform support for Linux Mint / Cinnamon:
+    - Platform-detected font families: Noto Sans + Noto Sans Mono (Linux),
+      Helvetica Neue + Menlo (macOS), Segoe UI + Consolas (Windows).
+      All 60 inline font references route through _FONT_SANS / _FONT_MONO_NAME.
+    - FCC_DB_CANDIDATES expanded with Linux paths: ~/FCC_DB, ~/hamdb,
+      ~/.local/share/fcc_db, ~/fcc_db, /opt/fcc_db.
+    - _fcc_folder() returns ~/FCC_DB on Linux/macOS, C:\FCC_DB on Windows.
+    - _browse_fcc_db start directory uses Linux-aware candidate list.
+    - _browse_ini start directory: Linux opens ~/.config/JS8Call/ or ~/.config/;
+      Windows TX-Halt-aware logic unchanged.
+    - Global hotkey (Ctrl+Shift+J) already guarded with sys.platform check.
+    - iconbitmap already wrapped in try/except.
+    - Browser launch already falls back to webbrowser.open() on non-Windows.
+  NEW FILE LaunchJS8Map.sh — Linux launcher (checks for python3-tk, runs in bg).
+  NEW FILE JS8Map.desktop — Linux Mint menu integration.
+
+Previous release: v1.82_Windows (locked Windows build)
+
+v1.82_Windows (locked Windows release):
+  CHANGE Removed Shadow TX mode from Settings radio buttons. Shadow still works
+    internally (tx_query path unchanged) but is no longer selectable in the UI.
+    Manual and Live are the only visible options.
+  CHANGE Removed the "↻ Change" button and "(Shadow → Manual → Live)" label
+    from the TX row. Mode is changed via the radio buttons in Settings.
+  CHANGE Group pill recolored from green (#66cc66) to purple (#E996F5):
+    🎯 icon, pill border, divider, Go fg, armed badge bg/fg all updated.
+    Groups button fg set to white on dark purple bg (#3a0a3a).
+    Combobox text set to white via foreground='white'.
+  CHANGE Added breathing room between group dropdown arrow and Go button
+    (divider padx 4→8, Go pack padx 0→6) to prevent accidental Go taps.
+  CHANGE API Log button removed from visible UI. Now opened via Ctrl+L hotkey
+    only (both cases bound). No conflict with map's bare-L label toggle.
+  FEATURE JS8Call.ini Browse button added to Settings (row 7, between FCC DB
+    and Startup TX). Shows path tail or "Auto-detect" in muted text. On pick:
+    saves to config, updates label, immediately re-syncs groups. Status bar
+    confirms with "✓ JS8Call.ini set · <folder>/JS8Call.ini".
+  FEATURE JS8Call.ini probe list expanded: now checks JS8Call-Improved and
+    JS8Call_Improved folder name variants (both Roaming and Local, env-var and
+    ~ expansion paths) in addition to standard JS8Call paths.
+  FEATURE Browse start directory is TX-Halt-aware: unchecked (older JS8Call) →
+    opens at AppData\Local\JS8Call\; checked (Improved) → opens at
+    AppData\Local\ for manual navigation into Improved's folder.
+  FIX Both "JS8Call.ini not found" warning messages updated from misleading
+    "Set the path in Settings" to accurate "Use Browse… beside JS8Call.ini
+    in Settings" (the Browse field now exists).
+  FIX ini_label populated on config load — shows saved path at startup just
+    like fcc_label (no stale "Auto-detect" when a path is already configured).
+
+Previous version: v1.82_K
+New in v1.82_J:
+  FIX Groups dropdown still dark in light theme after v1.82_I. Unlike the other
+    toolbar selects, #group-filter carried its own hardcoded inline dark style
+    in index.html (never used the .map-dropdown class), and dynamically-added
+    group options got an inline dark style in app.js (_ensureGroupOption). FIX:
+    the select now uses class="map-dropdown" (theme-aware), and added options
+    no longer set an inline background/color (they inherit .map-dropdown
+    option). Python's _build_group_filter_opts was already clean. Frontend-only
+    (index.html + app.js).
+  FIX Popup name now reads in natural order. FCC stores "LAST, FIRST MI"; the
+    popup showed it verbatim ("Schramm, Michael W"). Now flipped to "First MI
+    Last" ("Michael W Schramm") at the FCC-lookup step. (Kept under v1.82_J per
+    operator request — small fix, no version bump.)
+
+Current version: v1.82_I
+New in v1.82_I:
+  FIX Light-theme map toolbar dropdowns (Popup / New / Active / Groups) stayed
+    dark — a carryover from the dark theme. .map-dropdown had hardcoded colors
+    (background #1e2530, light text, white-ish border) instead of theme vars,
+    so they didn't follow light/dark like the toggle buttons (Fit All/Box/Anim)
+    do. FIX: .map-dropdown + its <option> now use var(--surface)/var(--text)/
+    var(--border) (+ a hover border in --blue), so the selects match the rest
+    of the toolbar in both themes. Frontend-only (app.css).
+    NOTE for a future pass: the top-bar .stat counters (I HEAR/MUTUAL/etc.)
+    use a faint white overlay (rgba(255,255,255,0.03/0.10)) that is nearly
+    invisible on the light background — not the reported dark carryover, but
+    worth theme-aware tokens if light-mode polish continues.
+
+Current version: v1.82_H
+New in v1.82_H:
+  FIX Startup TX radio showed "Manual" while the Live confirm dialog was open
+    (and briefly after), making a saved-Live default look like it hadn't
+    persisted ("popup appears but Manual is checked / didn't save"). The radio
+    selector (_tx_mode_sel_var) was only updated AFTER the dialog was answered;
+    its init value is 'manual'. FIX: _apply_tx_mode now sets the selector to
+    the mode being applied BEFORE showing the confirm, so the Live radio reads
+    as selected while its own confirm is open. Declining still re-syncs the
+    radio back to Manual afterward. Purely a display fix — _TX_MODE[0], the
+    gate, persistence, and the every-launch-confirm-when-Live safety behavior
+    are unchanged. (NOTE: the Live confirm only ever fires when the SAVED
+    default is Live; Manual/Shadow and first-time users are never prompted.)
+
+Current version: v1.82_G
+New in v1.82_G:
+  CHANGE Font cleanup. FONT_MONO was ('Yu Gothic', 12, 'bold') — a Japanese
+    sans-serif that is neither monospace nor a match for the Segoe UI used
+    everywhere else, so the data/identifier fields (callsign, grid, host:port,
+    group names, watched/groups lists) looked off. Now ('Consolas', 12,
+    'bold') — real monospace, matches the browser map's monospace, and the
+    constant name is finally accurate. One stray ('Yu Gothic', 9) Text widget
+    also moved to Consolas. UI is now a clean two-font system: Segoe UI for
+    chrome, Consolas for data. (No call-site changes — all route through
+    FONT_MONO.)
+  CHANGE Simplified the LIVE-mode confirmation dialog text (kept the native
+    Windows OK/Cancel gate; Cancel still falls back to Manual). Was a long
+    paragraph ending in the now-stale "relay message (Phase 2) still stages
+    for manual send" line. Now: "System going LIVE {at startup|now} — Realtime
+    TX about to be active. Continue?"
+
+Current version: v1.82_F
+New in v1.82_F:
+  CHANGE Moved the compose-window close (×) button from the bottom button row
+    to the top-right corner (conventional placement). Applies to BOTH the
+    popup MSG window and the relay MSG window (shared openComposePopup).
+    Frontend-only (app.js + a hover rule in app.css). The bottom row is now
+    Send · HALT · Clear; the × keeps its id/handler and Esc-to-close still
+    works, and the post-send countdown ("× to close now") is unaffected.
+
+Current version: v1.82_E
+New in v1.82_E:
+  CHANGE Removed the "Fade" map-toolbar filter (operator confirmed unused;
+    the new Active filter supersedes it). Frontend-only: dropdown gone from
+    index.html; setFade/fadePct/savedFade/WINDOW_MS and the label-opacity
+    logic removed from app.js (labels now always full opacity). The unrelated
+    "scan-fade" radar-sweep animation and the shared .map-dropdown styling are
+    untouched.
+  CHANGE Enlarged the notification badges above the callsign box (heard-by /
+    hears counts). They were ~10px circles with a ~7px digit — too small to
+    read. Now scale at ~1.5x the callsign font with a 16px floor and a larger
+    digit ratio, so the counts are legible at normal zoom. One tunable spot
+    (updateLabelSize in app.js) if they want them bigger/smaller. (Open Item B
+    'badge scaling on zoom' is effectively addressed; max_px can still be
+    raised later if deep zoom-in needs even larger.)
+
+Current version: v1.82_D
+New in v1.82_D:
+  NEW Map toolbar "🕐 Active: N min" filter (frontend-only). Sits beside the
+    existing "🆕 New" filter. The New filter keys on first_seen_ts (stations
+    that FIRST appeared within N min); the Active filter keys on last_seen
+    (stations LAST heard within N min), so it lines up with JS8Call's Age
+    column. Resolves the report where a 5-min filter dropped stations JS8Call
+    still showed as <5min old — those were recently active but first seen
+    earlier, so the New (first-seen) filter hid them. Options Off/1/5/10/15/30.
+    last_seen was already emitted per station, so no Python data changes; the
+    two filters are independent (AND-combined when both are set).
+
+Current version: v1.82_C
+New in v1.82_C:
+  FIX Stations that answered YES to a group-directed QUERY CALL were not
+    tagged to that group, so their callsign boxes did not turn the group
+    color (e.g. half the @AMRRON boxes stayed un-colored after a relay query).
+    Cause: group auto-tag Path B keys on a numeric SNR in the EXTRA field, but
+    YES replies carry an empty EXTRA (the SNR is inside TEXT), so Path B skips
+    them. FIX: the audience of the QUERY CALL is now remembered at arm time
+    (_pending_relay_audience), and a YES responder is tagged to that group
+    (new GRP-Y log path) — its box shows the group color like the SNR? path.
+    @ALLCALL/@HB are skipped (a YES there proves no specific group membership),
+    and the existing 300s armed-target gate still bounds when tagging applies.
+
+Current version: v1.82_B
+New in v1.82_B:
+  FIX Relay message would not send from the compose window in LIVE mode.
+    /relay_commit pre-staged just the relay PREFIX ('VIA>TARGET ') into
+    JS8Call's outgoing box via TX.SET_TEXT. When the compose-window Send then
+    fired TX.SEND_MESSAGE with the FULL frame, JS8Call would not cleanly
+    replace-and-send over the already-staged text — the message stuck in the
+    box showing only the prefix, and only flushed/transmitted after a manual
+    Halt reset JS8Call's TX state. FIX: stop pre-staging on commit; the compose
+    window already carries the complete frame to a clean box, so the live send
+    transmits immediately. Affects relay GO (banner) and the popup 'Relay to'
+    button (both route through /relay_commit). Manual/Shadow unaffected (their
+    compose Send writes the full frame via TX.SET_TEXT, overwriting cleanly).
+    NOTE: /relay_switch_path still stages a prefix for its paste-at-radio
+    workflow; if a future build routes Switch Path through the compose window,
+    apply the same change there.
+
+Current version: v1.82_A
+New in v1.82_A:
+  NEW Auto-sync callsign groups from JS8Call. On startup JS8Map reads
+    JS8Call.ini (the TCP API does not expose the Callsign Groups field) and
+    mirrors its "Callsign Groups (comma separated)" into the relay/query
+    audience list. New groups are merged into the map color list with auto-
+    assigned colors. Path auto-detects per-platform (Windows %LOCALAPPDATA%\
+    JS8Call\JS8Call.ini, Linux ~/.config, macOS ~/Library/Preferences); a
+    blank config key 'js8call_ini_path' can override it. The .ini is parsed by
+    value shape (a line of all @-tokens), not a hard-coded key name, so a
+    version quirk in the key spelling can't break the sync. Falls back to the
+    saved list with a status note if JS8Call.ini isn't found.
+  FIX Clear/QSY did not tear down an armed relay. _clear_map() wiped the
+    relay DB but left _armed_relay_ref, _armed_relay_pos_ref, and
+    _relay_committed_ref set in memory, so a stale target could snap back
+    after a frequency change. _clear_map() now performs a full relay teardown
+    (same sequence as /relay_arm_clear): all three module-level refs zeroed,
+    all relay timers cancelled, and armed_target/armed_target_pos stripped
+    from the in-memory data.json so the browser drops the relay overlay
+    immediately on the next poll.
+
+Current version: v1.81_F  (point revision of 1.81)
+New in v1.81_F:
+  FIX 'No such file or directory: ...boot.js' on launch. The saved out_path in
+    ham_map_config.json could point at a folder from a previous version; the
+    app trusted it blindly, so boot.js/ham_map.html failed to write. Now: (1)
+    a saved out_path is ignored on load if its folder no longer exists (falls
+    back to default beside the .py), and (2) the render write itself falls back
+    to the script dir if the resolved folder is missing. A stale config can no
+    longer strand the app.
+
+Current version: v1.81_E  (point revision of 1.81)
+New in v1.81_E:
+  FIX relay comet animation didn't fire when starting a relay from the
+    callsign-popup 'Relay to <target>' button. That button opened the compose
+    window directly and skipped /relay_commit, so _relay_committed_ref stayed
+    None and the TX.FRAME handler never advanced leg1_tx. Now the popup button
+    runs the SAME commit path as GO (via _relayFromPopup → _commitChain), so
+    the state machine arms and the comet animates. TX itself was always fine.
+
+Current version: v1.81_D  (point revision of 1.81)
+New in v1.81_D:
+  FIX compose-window HALT was unusable after Send — the window auto-closed in
+    1.2s, so HALT vanished before/while the (slow) JS8 TX was still going. Now
+    after a LIVE send the window STAYS OPEN ~15s (one Normal TX cycle) with
+    HALT live and a visible countdown; Send + text lock to prevent a double-
+    send; operator can hit X to close early. Hitting HALT stops the countdown
+    so the result stays readable. (Future: close on real TX-end via TX.FRAME.)
+  Relay 'Relay to' popup button now opens the compose window (was clipboard).
+  Relay-to-callsign toolbar input hidden (relays start from map/Python flow).
+  Header version banner corrected (was stale).
+
+Current version: v1.81_C  (point revision of 1.81)
+New in v1.81_C:
+  FIX relay compose Send: the /popup_tx 'msg_send' branch rebuilt the frame as
+    '<CALL> MSG <text>', which DESTROYED relay routing (KO4BIA>N4WXI became
+    'KO4BIA MSG ...' and JS8Call couldn't route it). Now transmits the exact
+    frame the compose window built (body['frame']) verbatim, preserving
+    'VIA>TARGET <msg>'. Direct MSG unaffected; reconstruct only as fallback.
+  Compose textarea now forces UPPERCASE as you type (JS8 is caps-only) — both
+    displayed and in the actual transmitted text.
+  Main window taller (800h, clamped to screen) so the TX readout + HALT
+    settings rows no longer clip the bottom buttons.
+
+Current version: v1.81_B  (point revision of 1.81)
+New in v1.81_B:
+  Compose popup for outgoing messages (callsign-popup MSG + relay MSG, same
+  window — consistent). Type, Enter to Send (transmits mode-aware via
+  /popup_tx 'msg_send' → tx_query), HALT button, X Clear. Send auto-closes on
+  a LIVE transmit. Keeps you in JS8Map instead of switching to JS8Call.
+  HALT button → RIG.TX_HALT over the existing connection (JS8Call Improved
+  API 3.0+). Gated by a settings checkbox 'My JS8Call supports RIG.TX_HALT',
+  DEFAULT OFF (older 2.x has no API halt; button greys with a tooltip pointing
+  to JS8Call's own Halt Tx, which is always available since JS8Call is open).
+  New /halt_tx endpoint; tx_halt() sends over the existing socket directly
+  from the HTTP thread for an immediate stop. Capability flows to the browser
+  via boot + data poll so the button enables/disables live.
+
+Current version: v1.81_A  (point revision of 1.81)
+New in v1.81_A:
+  Callsign-popup buttons (SNR? / HEARING? / MSG) now route through the same
+  audited TX chokepoint as Group GO / Relay Search (previously they POSTed
+  TX.SEND_MESSAGE directly to JS8Call, bypassing TX mode + logging):
+    - SNR? / HEARING? → tx_query (mode-aware): auto-send in LIVE, fill box in
+      MANUAL, log in SHADOW. Triggers 'popup-snr' / 'popup-hearing'.
+    - MSG → tx_stage (always fills JS8Call's box with '<CALL> MSG <text>',
+      never transmits): operator reviews and presses send. Trigger 'popup-msg'.
+      Keeps the message prompt; pre-fills what you typed.
+    - New /popup_tx endpoint; sendJS8() rewritten to use it (same-origin),
+      with clipboard fallback if Python is unreachable. Status line reports
+      transmitted / filled box / shadow / invalid callsign.
+  Settings "Startup TX" radios: enlarged to size 11 (normalized with the gold
+  label) and the ACTIVE mode now shows green + bold text (not just the dot),
+  following the real armed mode (stays Manual if a Live pick is declined).
+
+v1.81  (STABLE RELEASE — locked)
+
+v1.81 consolidates the v1.80_B..v1.80_F release-candidate series into a
+stable build. Headline changes since v1.80:
+  • TX MODE (Shadow / Manual / Live) governs Group GO + Relay Search, with a
+    persisted startup default (config 'tx_mode', never auto-live), a settings
+    radio, a mid-session "↻ Change" flip, an always-visible colour readout,
+    and a confirm prompt EVERY time Live becomes active. Relay Phase-2 GO is
+    exempt and always stages.
+  • Phase-2 relay staging via tx_stage()/TX.SET_TEXT — fills JS8Call's box
+    (never transmits) + clipboard backup; operator sends the real message.
+  • TX status feedback: status lines report what actually happened
+    (transmitted LIVE / filled box MANUAL / not connected / shadow).
+  • Relay reliability: discovery rebuilds the map so vias plot live; home
+    station no longer hidden; "Refresh paths" button; return-leg watchdog
+    (timeout_return → Switch Path) for when a via never relays the reply home.
+  • Relay callsign field rewritten to an airtight placeholder model — the
+    2nd-callsign mangling bug ('EKGC1PHY') is eliminated at the root.
+  • UI: gold "Startup TX" settings label.
+
+Known open item (deferred to a future version):
+  • Clear/QSY does not yet tear down an armed relay target, so a stale target
+    can briefly reassert after a frequency change until cleared with ×.
+
+Detailed RC history follows.
+─────────────────────────────────────────────────────────────────────
+v1.80_F:
+  FIX (root cause) relay 2nd-callsign mangling ('EKGC1PHY'): replaced the
+    fragile in-StringVar placeholder with an airtight model — a <KeyPress>
+    handler clears the placeholder BEFORE the typed char lands, and a write
+    trace sanitizes every change to callsign-legal chars only. The placeholder
+    can never coexist with input, so typing a second callsign after Search (or
+    after the × clear) always yields a clean target. Arm guard also short-
+    circuits when the placeholder is active. Verified: ke2kn→KE2KN, × clear,
+    kc1phy→KC1PHY (not EKGC1PHY).
+v1.80_E:
+  TX feedback: tx_query now returns a status ('sent'/'staged'/'shadow'/'skip')
+    and the relay-arm + group-Go status lines report what ACTUALLY happened
+    ("transmitted (LIVE)" / "filled JS8Call box (MANUAL)" / "not connected"),
+    instead of always saying "copied to clipboard". Makes mode behavior and
+    connection problems self-diagnosing. Removed a stray duplicate return.
+v1.80_D:
+  FIX relay callsign field: placeholder ('e.g. KD4E') could concatenate with
+    typed input on a focus race (e.g. 'KC1E.G. KD4E'), pass the old exact-match
+    guard, and send a malformed QUERY CALL that JS8Call ignored — the cause of
+    "relay didn't fire after reopen". Now: _relay_key strips placeholder
+    fragments + keeps only callsign-legal chars; FocusOut/hide clears partial
+    placeholder; arm guard validates the target (3–10 chars, has a digit) and
+    rejects remnants so garbage never reaches tx_query.
+  UI: "Startup TX" settings label is now gold + bold to stand out.
+v1.80_C:
+  TX MODE feature — Shadow / Manual / Live, governs Group GO + Relay Search:
+    - shadow: log only (no JS8Call touch); manual: TX.SET_TEXT (fills box, no
+      RF, operator sends); live: TX.SEND_MESSAGE (real RF).
+    - Saved startup default in config ('tx_mode'); missing/corrupt → 'manual'.
+      NEVER auto-defaults to live.
+    - Settings card: "Startup TX" radio (Shadow/Manual/Live), persists.
+    - Mid-session "↻ Change" flip (Shadow→Manual→Live) without restart.
+    - Always-visible on-screen readout (🔴 SHADOW / 🟡 MANUAL / 🟢 LIVE).
+    - Going LIVE prompts a confirm EVERY time (including at startup); decline
+      falls back to manual.
+    - Relay Phase-2 GO is EXEMPT — always stages (TX.SET_TEXT) in every mode.
+v1.80_B:
+  Phase-2 relay staging: GO now stages the relay frame instead of sending it.
+    - tx_stage() chokepoint uses TX.SET_TEXT (fills JS8Call's outgoing box,
+      NEVER transmits) + clipboard copy as backup. Operator types the message
+      in JS8Call and presses send manually — human checkpoint on the one frame
+      that carries real content.
+    - tx_stage is EXEMPT from the shadow gate (TX.SET_TEXT is RF-safe by
+      design); the real transmit path (tx_query / TX.SEND_MESSAGE) stays gated.
+  Return-leg watchdog: timeout_return fires if the via gets the target's reply
+    but never relays it home (Switch Path popup, mirrors timeout_dest).
+  Relay discovery now rebuilds the map (vias plot live); home station no longer
+    hidden during relay; "Refresh paths" button added to relay banner.
+Key features delivered in C.18 series:
+  Relay animation: leg1_tx, leg2_fwd (45s single-pass), rtn_leg1, rtn_leg2
+  Early animation triggers from RX.FRAG offset detection (rtn_leg1 + rtn_leg2)
+  Offset tracking (_last_seen_offset) for destination timer accuracy
+  YES list persistence + Switch Path panel on timeout_dest
+  Destination timeout 45s (sliding window, resets on each via-offset frag)
+  Relay outcome pill (green/amber), persists after leaving relay view
+  Re-arm full state clear: relay DB, committed ref, anim ref, timers
+  fitAll auto-fires on Done exit; api_log preserved across restarts
+  R button replaced with full JS8Call snapshot refresh
+  Animation on/off toggle; Watched Calls filter; Groups moved to row 1
+  Light-map line visibility improved (weight 2.8, opacity 0.75)
+  Reset Relay (was Clear Relay); Clear button removed (redundant with Done)
+Full version history is in CHANGELOG.txt.
+
+
+==============================================================================
+2026-07-18  —  Buildout Phase 7  (1.6.0)
+==============================================================================
+
+RUNTIME PROOF — the whole 1.6.0 product, both apps (tag v1.6.0-40-runtime-proven)
+  No code change in JS8Map. Both apps rebuilt and launched FROZEN from dist\;
+  both resolver logs, same minute, frozen=True, agreed on
+  SHARED DIR = ...\JS8MapChat Shared Ver 1.5 (walk-up). Map generated first,
+  app-switch button exercised, SNR? and INFO? round-tripped live on 40m.
+  Evidence: %LOCALAPPDATA%\JS8Map\shared_resolve.log 17:46:17 UTC entry;
+  API log 17:47-17:49 UTC. WHY IT'S HERE: last runtime-proven tag before this
+  was v1.6.0-35-shared-resolver-proven; this closes the "green build is not a
+  working exe" gap for 1.6.0.
+
+shared_resolver.py — per-user mailbox path calc deduplicated (commit bc1cfaa)
+  NOT A BUG FIX. No defect existed (confirmed Phase 6, re-confirmed Phase 7 by
+  reading both files). Drift insurance only: the intent poller (FastChat side)
+  carried its own copy of the %LOCALAPPDATA%\JS8MapChat\Shared path calc; the
+  two copies computed identical paths but COULD drift under future edits.
+  OLD (this file): per_user_shared_dir() computed the path inline and called
+      os.makedirs(d, exist_ok=True) on it.
+  NEW (this file): per_user_shared_dir_path() — NEW function — computes the
+      path and NEVER creates; per_user_shared_dir() now calls it and then
+      makedirs. Writer behaviour byte-for-byte unchanged.
+  WHY: one spelling of the path, two behaviours (create vs compute-only), so a
+      future edit cannot make the reader and the writers disagree.
+  BOTH TWINS edited byte-identically (MD5 602fe05e796deef90700b6f0a4026f36);
+  #35 hash-gate printed that hash on the proving rebuild. NEVER edit one twin
+  alone.
+
+NOT A BUG — leave these alone:
+  * %LOCALAPPDATA%\JS8MapChat\Shared sitting EMPTY on the dev machine is
+    CORRECT. It is the no-sibling fallback; walk-up wins inside the dev tree
+    and the live mailbox is ...\JS8MapChat Shared Ver 1.5. An empty per-user
+    Shared is not a broken mailbox. (Arch doc §5.3.)
+  * THREE files are now named shared_resolve.log. JS8Map writes to
+    %LOCALAPPDATA%\JS8Map\ when FROZEN and beside the code when run as a
+    script — the script-mode one goes stale the moment you stop running from
+    source. Stale dates there do NOT mean JS8Map failed to log. (Arch doc §8.)
+
+PENDING (logged, not a defect):
+  * JS8Map.exe on disk (07-18 01:45 PM) predates commit bc1cfaa. Behaviour
+    expected identical; the next rebuild picks the refactor up through the
+    hash-gate. Until then that exe is pre-bc1cfaa code.
+
+==============================================================================
+2026-07-19  —  Bug Testing Phase 1  (1.6.0)
+==============================================================================
+
+JS8Map.exe REBUILT — the Phase 7 PENDING item above is now CLOSED.
+  No code change. The rebuild exists only to pick up commit bc1cfaa (the
+  resolver dedup), which landed after the previous exe was built.
+  OLD exe: 2026-07-18 01:45 PM, 13,319,544 bytes — pre-bc1cfaa code.
+  NEW exe: 2026-07-19 07:01 AM, 13,319,722 bytes — contains bc1cfaa.
+  PROVEN AT RUNTIME, not just built: launched FROZEN from dist\ via the desktop
+  shortcut, map generated first (the §4.5 prerequisite), and
+  %LOCALAPPDATA%\JS8Map\shared_resolve.log recorded at 11:03:32 UTC:
+      SHARED DIR = ...\JS8MapChat Shared Ver 1.5
+      rule    : walk-up from ...\JS8Map Ver 1.5\dist
+      version : 1.6.0  frozen=True
+  Behaviour identical to every launch since 2026-07-13 — the dedup changed
+  structure, not results, exactly as predicted. Clock check: exe stamped 07:01
+  LOCAL, log entry 11:03:32 UTC (EDT = UTC−4) = 07:03 local, two minutes after
+  the build. This is the new binary logging, not a stale entry.
+  WHY IT'S HERE: this was the last UNPROVEN item anywhere in the record.
+
+Installer rebuilt as a side effect of the build script:
+  installer_output\JS8MapChat_v1.6.0_Setup.exe was regenerated by the same run
+  (the .bat calls ISCC). ⚠ DO NOT DISTRIBUTE IT. JS8Map.iss is still UNREAD and
+  still requires admin and provisions a world-writable C:\FCC_DB. The installer
+  building successfully is NOT a security review.
