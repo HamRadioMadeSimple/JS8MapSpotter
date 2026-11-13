@@ -1,0 +1,55 @@
+Group Activation|F!704
+
+. Version 06/28/2026
+# KN4AM - @SITREP - SitRepNet.com
+
+! Group Activation/Cancellation
+
+. Use this to initiate a group Activation/Deactivation and Alert.
+.
+[GR] Name of Group:
+[KW] Key Word (optional):
+
+? Category:
+@0 Unknown or N/A
+@1 Severe weather (Hurricane, Tornado, Blizzard)
+@2 Flood
+@3 Earthquake
+@4 Tsunami
+@5 Fire
+@6 Civil Disturbance
+@7 Terrorism
+@8 Power Failure
+@9 Internet/Cellphone Outage
+@A Water
+@B Food
+@C Fuel
+@D Transportation/Roads/Bridges
+@E Supply chain
+@F Evacuation
+@G Medical
+@H Financial
+@J Political
+@K Foreign Involvement
+@L Domestic Military Action
+@M Reserved 1
+@N Reserved 2
+@P Reserved 3
+@Q Reserved 4
+@R Reserved 5
+@S Other
+
+? Severity/Activation Type:
+@0 Unknown or N/A
+@1 Minor/Limited Impact
+@2 Moderate
+@3 Severe
+@4 Major/Catastrophic
+@5 TEST/Readiness Exercise
+@6 CANCEL Activation
+@7 Pre-activation Notice
+
+.
+!!! Do not add anything to the Form Comment field. Use other forms for further details if needed.
+. Use Key Word for authentication and/or to refer to CommPlan/SOI.
+. Use your exact standard group name.

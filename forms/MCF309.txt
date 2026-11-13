@@ -1,0 +1,78 @@
+Map Pin Report|F!309
+
+. Version 07/13/2026
+# KN4AM - @SITREP - SitRepNet.com
+
+! Map Pin report for JS8Reporter and MHGridMapper - @SITREP
+
+. This adds a Situation/Incident map pin to a receiving station's JS8Reporter and MHGridMapper.
+.
+[DS] Brief (15 Characters max.) description of event or situation:
+[GR] Maidenhead Grid Square Map Pin location (REQUIRED - 4, 6, 8, or 10 characters):
+? Affected Area:
+@1 This Grid Square
+@2 This city or county
+@3 This state
+@4 This region
+
+? Category:
+@1 Severe weather (Hurricane, Tornado, Blizzard)
+@2 Flood
+@3 Earthquake
+@4 Tsunami
+@5 Fire
+@6 Civil Disturbance
+@7 Terrorism
+@8 Power Failure
+@9 Internet/Cellphone Outage
+@A Water
+@B Food
+@C Fuel
+@D Transportation/Roads/Bridges
+@E Supply chain
+@F Evacuation
+@G Medical
+@H Financial
+@J Political
+@K Foreign Involvement
+@L Other
+@M Reserved 1
+@N Reserved 2
+@P Reserved 3
+@Q Reserved 4
+@R Reserved 5
+
+? Severity:
+@1 Minor/Limited Impact
+@2 Moderate
+@3 Severe
+@4 Major/Catastrophic
+@5 Unknown or N/A
+
+? Situation Time Frame:
+@1 General information, time frame unknown or not applicable
+@2 Anticipated within the next week/month
+@3 Imminent - hours to days
+@4 Currently happening / On-going
+@5 Chronic issue
+
+? Current Status:
+@1 New
+@2 Ongoing, Deteriorating
+@3 Ongoing, Improving
+@4 Resolved
+@5 Unknown
+
+? Report Expiration Time:
+@0 Does not expire.
+@1 24 hours past creation time of this report
+@2 48 past creation time of this report
+@3 3 days past creation time of this report
+@4 1 week past creation time of this report
+@5 2 weeks past creation time of this report
+.
+!!! Do not add anything to the Form Comment field.
+. Use this form with JS8Reporter and MHGridMapper - see sitrepnet.com for more info.
+. For reporting situations and incidents in North America only.
+
+

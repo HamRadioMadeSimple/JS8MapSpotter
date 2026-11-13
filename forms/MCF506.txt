@@ -1,0 +1,71 @@
+Hurricane Damage Assessment|F!506
+
+. Version 07/14/2026
+# Form published 03/31/2026. See SitRepNet.com for details and supporting docs for this form. KN4AM
+
+! Hurricane Damage Assessment
+
+. See Notes for additional reports needed
+. 
+. 
+
+[ST] State (2-letter code):
+[GR] Maidenhead Grid Square:
+[CT] City or County:
+
+. 
+. 
+
+
+? Subjective assessment of overall severity:
+@0 Unknown or N/A
+@1 Affected, but quick recovery anticipated
+@2 Minor damage to multiple homes observed
+@3 Major damage to multiple homes observed
+@4 Catastrophic - Multiple homes destroyed beyond repair
+
+? Time since hurricane or tropical storm force winds ended:
+@0 Zero. Winds currently at hurricane or Tropical Storm force.
+@1 < 2 hours
+@2 2 hours to 24 hours
+@3 24 hours to 48 hours
+@4 48 hours or more
+
+? Road Debris:
+@0 Unknown or N/A
+@1 No significant debris in roads
+@2 Debris in roads, but traffic able to avoid
+@3 Major debris in roads in limited areas
+@4 Extensive major debris in roads, some areas impassable
+@5 Traffic limited to specialized vehicles or completely impassable
+
+? Road Damage:
+@0 Unknown or N/A
+@1 No significant road damage observed
+@2 Some road damage - traffic unaffected
+@3 Serious road damage - impassable in some areas
+@4 Serious road damage in many areas
+@5 Catastrophic road damage
+
+? Power Infrastructure:
+@0 Unknown or N/A
+@1 No significant damage observed
+@2 Some power lines down in limited areas
+@3 Extensive power line damage in limited areas
+@4 Extensive power line damage throughout this area
+
+? Flooding:
+@0 Unknown or N/A
+@0 No flooding observed or reported
+@1 Minor flooding in small, localized areas (< 10 homes)
+@2 Significant flooding affecting small, localized areas (< 10 homes)
+@3 Major flooding affecting large areas (10 or more homes)
+@4 Catastrophic flooding
+
+. 
+. ______________________________________________________________________
+. ===== NOTES =====
+. Area reported on is generally your 4 or 6 character grid square
+. Include the following CURRENT reports as Expect items in JS8Spotter:
+. 1) F!500 - Supply Survey
+. 2) F!505 - Area Assessment
