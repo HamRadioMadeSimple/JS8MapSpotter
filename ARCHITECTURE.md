@@ -3,7 +3,7 @@
 > This describes JS8Map Spotter **as actually built** at build 2026-10-29e
 > (program code as 29b; 29c–29e and 2026-11-02 changed the release and Linux
 > scripts). Spotter is a fork of **JS8Map 1.75** (JS8MapChat 1.75.1, in
-> [github.com/mjordan501/JS8MapChat](https://github.com/mjordan501/JS8MapChat)),
+> [github.com/HamRadioMadeSimple/JS8MapChat](https://github.com/HamRadioMadeSimple/JS8MapChat)),
 > so the JS8MapChat architecture notes cover everything inherited unchanged. This document covers what Spotter adds, what it changes, and the
 > rules that now differ from JS8Map.
 >
@@ -13,7 +13,7 @@
 > Last synced: 2026-10-29, session "JS8Map Spotter Linux Testing"
 > (builds 17e–29a). Replaces "architecture Ver 1.1" and "Ver 1.2".
 > **Revised 2026-11-12 for the GitHub repository
-> [github.com/mjordan501/JS8MapSpotter](https://github.com/mjordan501/JS8MapSpotter)**
+> [github.com/HamRadioMadeSimple/JS8MapSpotter](https://github.com/HamRadioMadeSimple/JS8MapSpotter)**
 > (GPL-3.0): §2, §3.7, §7 and §9 updated; the rest is as of 29a.
 >
 > **Version numbering:** Spotter was 1.1 → 1.2 → **1.76** (20a, operator

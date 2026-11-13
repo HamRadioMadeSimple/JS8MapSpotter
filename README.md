@@ -24,7 +24,7 @@ Current version: **1.76** (build 2026-10-29e). Windows and Linux.
 
 JS8Map Spotter installs **alongside JS8Map 1.75** and does not change it: own
 folder, settings, icon and taskbar button. It works with
-**[JS8FastChat](https://github.com/mjordan501/JS8MapChat)** for per-station chat.
+**[JS8FastChat](https://github.com/HamRadioMadeSimple/JS8MapChat)** for per-station chat.
 
 ---
 
@@ -46,7 +46,7 @@ Start order: **JS8Call, then JS8Map Spotter, then JS8FastChat** if you use it.
 
 ## Install on Windows
 
-1. Open the [Releases](https://github.com/mjordan501/JS8MapSpotter/releases/latest)
+1. Open the [Releases](https://github.com/HamRadioMadeSimple/JS8MapSpotter/releases/latest)
    page and download `JS8Map_Spotter_v1.76_Setup.exe`. Your browser saves it to
    your Downloads folder.
 2. Double-click it and follow the installer.
@@ -61,7 +61,7 @@ To update, download the newer `Setup.exe` and run it. Your settings are kept.
 For Linux Mint 22, Ubuntu 24.04 or newer, on a normal 64-bit PC (not a
 Raspberry Pi). No Python is needed; the package is ready to run.
 
-1. Open the [Releases](https://github.com/mjordan501/JS8MapSpotter/releases/latest)
+1. Open the [Releases](https://github.com/HamRadioMadeSimple/JS8MapSpotter/releases/latest)
    page and download `JS8Map_Spotter_v1.76_build_2026-10-29e_linux.tar.gz`.
    Your browser saves it to your Downloads folder.
 2. Open a terminal (Ctrl+Alt+T), paste these two lines, and press Enter:
@@ -162,7 +162,7 @@ with or endorsed by the JS8Call project.
 
 ## Reporting problems
 
-Open an issue on the [Issues](https://github.com/mjordan501/JS8MapSpotter/issues)
+Open an issue on the [Issues](https://github.com/HamRadioMadeSimple/JS8MapSpotter/issues)
 tab. Please include the build from the bottom of the StatRep box (for example
 `build 2026-10-29e`), Windows or Linux, your JS8Call version, and a screenshot.
 
