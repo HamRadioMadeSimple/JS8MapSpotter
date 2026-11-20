@@ -588,6 +588,11 @@ These are load-bearing rules, not style preferences.
   the Linux package (`build_linux.sh`, Ubuntu 22.04) when a release is
   published, and attaches them with the guide PDFs from `docs/`. Release notes
   come from the top section of `CHANGELOG.md`.
+- **`update_linux.sh` Downloads fix (GitHub only, 2026-11-20):** when no
+  Downloads folder is set up, `xdg-user-dir DOWNLOAD` answers with the home
+  folder, so the script looked for the zip in `~` instead of `~/Downloads`; it
+  now falls back to `~/Downloads`. Found by the first GitHub test run (15 of the
+  28 checks failed there). Bring this file back to the app's project.
 - **Twin across repositories.** `shared_resolver.py` is now in two repositories.
   `Build_JS8Map.bat` looks for `..\check_twins.bat`, which only exists in
   JS8MapChat, so in this repository it warns and skips. Check by hand before a

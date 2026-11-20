@@ -87,6 +87,9 @@ for a in "$@"; do
 done
 if [ -z "$ZIP" ]; then
     DL="$(xdg-user-dir DOWNLOAD 2>/dev/null || echo "$HOME/Downloads")"
+    # xdg-user-dir answers with the home folder itself when no Downloads
+    # folder is set up (2026-11-20, found by the GitHub test run).
+    [ -z "$DL" ] || [ "$DL" = "$HOME" ] && DL="$HOME/Downloads"
     # newest first; zip names never contain newlines, so ls | grep is safe here
     # shellcheck disable=SC2010
     ZIP="$(ls -t "$DL"/JS8Map_Spotter_Ver_*_build_*.zip 2>/dev/null | grep -v '_Windows' | head -n 1 || true)"
