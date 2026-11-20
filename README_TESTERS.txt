@@ -36,7 +36,7 @@ WINDOWS
    During setup tick "Add python.exe to PATH". Keep the default options
    (they include Tk, which the program window needs).
 2. Unzip this file anywhere you like, e.g. Documents. It makes a folder
-   called "JS8Map Spotter V1.76".
+   called "Spotter Mapper Ver 1.76".
 3. Open that folder and double-click  debug.bat
    A black console window opens behind the program; leave it open -- any
    error message appears there.
@@ -47,7 +47,7 @@ LINUX (Mint / Ubuntu / Debian)
 1. Unzip into your home folder (save the zip in Downloads first):
        unzip ~/Downloads/JS8Map_Spotter_Ver_*_build_*.zip -d ~/JS8MapSpotter
 2. Run the setup script, once:
-       sh ~/JS8MapSpotter/*Spotter*/linux_install.sh
+       sh ~/JS8MapSpotter/Spotter*/linux_install.sh
    It checks for Python with Tk (and unzip and wmctrl), shows the apt command
    for anything missing and offers to run it, then adds the menu entry and a
    desktop icon. Run it again after installing anything it asked for.
@@ -68,7 +68,7 @@ UPDATING TO A NEWER TEST BUILD
 Close the program and its map window first.
 
 Linux: save the new zip in Downloads, then run
-       sh ~/JS8MapSpotter/*Spotter*/update_linux.sh
+       sh ~/JS8MapSpotter/Spotter*/update_linux.sh
    It picks the newest zip in Downloads, renames the folder if the version
    changed, unzips over it and re-points the desktop icon.
 Windows: unzip the new file into the SAME place, replacing files.

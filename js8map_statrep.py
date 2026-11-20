@@ -79,7 +79,7 @@ ALERT_COLOR = {1: 'Yellow', 2: 'Orange', 3: 'Red', 4: 'Black'}
 
 # Visible on the map board footer so the operator can tell at a glance which
 # StatRep build is actually running (several same-named zips went out).
-STATREP_BUILD = '2026-10-29e'
+STATREP_BUILD = '2026-10-29f'
 # Bump when parse_message learns something new. On the next import the
 # JS8Spotter watermark is reset so its history is read again with the new
 # rules (safe: everything already stored is de-duplicated, nothing is lost).

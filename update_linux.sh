@@ -1,13 +1,12 @@
 #!/bin/sh
 # update_linux.sh -- update JS8Map Spotter on Linux with one command.
 #
-#   sh ~/JS8MapSpotter/*Spotter*/update_linux.sh              newest zip in ~/Downloads
-#   sh ~/JS8MapSpotter/*Spotter*/update_linux.sh FILE.zip     a particular zip
+#   sh ~/JS8MapSpotter/Spotter*/update_linux.sh              newest zip in ~/Downloads
+#   sh ~/JS8MapSpotter/Spotter*/update_linux.sh FILE.zip     a particular zip
 #   sh update_linux.sh                (from ANY copy, e.g. a build folder -- 29c)
 #
 # Which Spotter it updates (29c):
-#   - run from the installed copy (a "JS8Map Spotter Vx" folder -- or the old
-#     name, "Spotter Mapper Ver x" -- directly in
+#   - run from the installed copy (a "Spotter Mapper Ver x" folder directly in
 #     ~/JS8MapSpotter): that copy, as before;
 #   - run from anywhere else: the installed copy -- the folder the menu entry
 #     points at, else the one Spotter folder in ~/JS8MapSpotter;
@@ -23,7 +22,7 @@
 #      databases -- e.g. the withdrawn 19a/19b zips);
 #   3. stops if Spotter is running from this folder (close it first);
 #   4. if the version changed, renames this folder to the zip's folder name
-#      ("Spotter Mapper Ver 1.76" -> "JS8Map Spotter V1.77"), so your
+#      ("Spotter Mapper Ver 1.2" -> "Spotter Mapper Ver 1.76"), so your
 #      settings and databases move with it;
 #   5. unzips over the folder (your settings and databases are not in the zip,
 #      so they are kept), restores the "executable" marks a Windows PC may
@@ -64,7 +63,7 @@ else
     fi
     if [ -z "$TARGET" ]; then
         n=0
-        for d in "$IROOT"/"JS8Map Spotter V"* "$IROOT"/"Spotter Mapper Ver "*; do
+        for d in "$IROOT"/"Spotter Mapper Ver "*; do
             [ -f "$d/JS8Map.py" ] || continue
             n=$((n + 1)); TARGET="$d"
         done
@@ -98,7 +97,7 @@ fi
 
 NEW="$(unzip -Z1 "$ZIP" 2>/dev/null | head -n 1 | cut -d/ -f1)"
 case "$NEW" in
-    "JS8Map Spotter V"*|"Spotter Mapper Ver "*) ;;
+    "Spotter Mapper Ver "*) ;;
     *) stop "$ZIP is not a JS8Map Spotter zip (its folder is '$NEW')." ;;
 esac
 if unzip -Z1 "$ZIP" | grep -Eq '(^|/)(js8map_request_token\.txt|ham_map_config\.json)$|\.db(-wal|-shm)?$'; then
@@ -129,7 +128,7 @@ if [ -n "$FIRST" ]; then
     say ""
     say "DONE. JS8Map Spotter build $NEW_TAG is installed in:"
     say "  $ROOT/$NEW"
-    say "Later updates:  sh ~/JS8MapSpotter/*Spotter*/update_linux.sh"
+    say "Later updates:  sh ~/JS8MapSpotter/Spotter*/update_linux.sh"
     exit 0
 fi
 

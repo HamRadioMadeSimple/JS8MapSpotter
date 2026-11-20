@@ -1,0 +1,29 @@
+# Runs the unit tests and the Linux install/update script checks on every push.
+name: Tests
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  tests:
+    # Ubuntu 22.04 = Linux Mint 21, the oldest Linux the release package is built for.
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Tk, zip and unzip
+        run: sudo apt-get update && sudo apt-get install -y python3-tk zip unzip
+      - name: The two build tags agree
+        run: |
+          PY="$(sed -n "s/^STATREP_BUILD *= *'\([^']*\)'.*/\1/p" js8map_statrep.py)"
+          JS="$(sed -n "s/^const SR_PAGE_BUILD *= *'\([^']*\)'.*/\1/p" app.js)"
+          echo "js8map_statrep.py $PY   app.js $JS"
+          [ -n "$PY" ] && [ "$PY" = "$JS" ]
+      - name: Unit tests
+        run: python3 -m unittest discover -s tests -v
+      - name: Linux script checks
+        run: |
+          bash tests/test_linux_scripts.sh | tee scripts.log
+          grep -q 'failed 0$' scripts.log
+          ! grep -q 'SKIP' scripts.log

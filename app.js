@@ -3343,7 +3343,7 @@ function toggleFitExclusion(call, btn){
    Board (top-left, under zoom): alerts, then stations worst-first, each with
    its 12-category strip. Click a row to fly there and open the report.
    ══════════════════════════════════════════════════════════════════════════ */
-const SR_PAGE_BUILD = '2026-10-29e';   // keep in step with STATREP_BUILD in js8map_statrep.py
+const SR_PAGE_BUILD = '2026-10-29f';   // keep in step with STATREP_BUILD in js8map_statrep.py
 const SR_COLORS = {'1':'#28a745','2':'#ffc107','3':'#dc3545','4':'#6c757d','6':'#8e44ad','7':'#d63384'};
 const SR_NAMES  = {'1':'Green','2':'Yellow','3':'Red','4':'Unknown','6':'Event','7':'Attack'};
 const SR_RANK   = {'3':4,'7':4,'2':3,'6':3,'4':1,'1':0};

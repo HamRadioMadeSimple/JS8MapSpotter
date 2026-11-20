@@ -20,7 +20,7 @@ It never transmits on its own: nothing goes out unless you click a send button,
 and the map's buttons carry a private key so another web page can't make your
 radio transmit.
 
-Current version: **1.76** (build 2026-10-29e). Windows and Linux.
+Current version: **1.76** (build 2026-10-29f). Windows and Linux.
 
 JS8Map Spotter installs **alongside JS8Map 1.75** and does not change it: own
 folder, settings, icon and taskbar button. It works with
@@ -47,27 +47,35 @@ Start order: **JS8Call, then JS8Map Spotter, then JS8FastChat** if you use it.
 ## Install on Windows
 
 1. Open the [Releases](https://github.com/HamRadioMadeSimple/JS8MapSpotter/releases/latest)
-   page and download `JS8Map_Spotter_v1.76_Setup.exe`. Your browser saves it to
-   your Downloads folder.
-2. Double-click it and follow the installer.
+   page and download `JS8Map_Spotter_v1.76_build_2026-10-29f_Setup.exe`. Your
+   browser saves it to your Downloads folder.
+2. Double-click it. If Windows says "Windows protected your PC", click
+   **More info** > **Run anyway**. Then **Next**, **Install**, **Finish**.
 3. Start **JS8Map Spotter** from the desktop icon. The first-run setup downloads
    the FCC database (about 100 MB, 2–5 minutes), offers the Canadian database,
    and asks for your callsign and grid. Then click **Generate Map**.
 
 To update, download the newer `Setup.exe` and run it. Your settings are kept.
 
+**No installer?** Download `JS8Map_Spotter_v1.76_build_2026-10-29f_windows.zip`
+instead, right-click it > **Properties** > tick **Unblock** if shown, then
+**Extract All…** into Documents and double-click `JS8Map.exe`.
+
+The one-page [Windows Quick Install](docs/JS8Map_Spotter_1.76_Windows_Quick_Install.pdf)
+has both ways, the JS8Call settings and troubleshooting.
+
 ## Install on Linux
 
-For Linux Mint 22, Ubuntu 24.04 or newer, on a normal 64-bit PC (not a
+For Linux Mint 21, Ubuntu 22.04, Debian 12 or newer, on a normal 64-bit PC (not a
 Raspberry Pi). No Python is needed; the package is ready to run.
 
 1. Open the [Releases](https://github.com/HamRadioMadeSimple/JS8MapSpotter/releases/latest)
-   page and download `JS8Map_Spotter_v1.76_build_2026-10-29e_linux.tar.gz`.
+   page and download `JS8Map_Spotter_v1.76_build_2026-10-29f_linux.tar.gz`.
    Your browser saves it to your Downloads folder.
 2. Open a terminal (Ctrl+Alt+T), paste these two lines, and press Enter:
 
 ```sh
-tar -C ~/Downloads -xzf ~/Downloads/JS8Map_Spotter_v1.76_build_2026-10-29e_linux.tar.gz
+tar -C ~/Downloads -xzf ~/Downloads/JS8Map_Spotter_v1.76_build_2026-10-29f_linux.tar.gz
 bash ~/Downloads/JS8Map_Spotter_v1.76_linux/install.sh
 ```
 
@@ -107,7 +115,9 @@ report a problem, please don't send `ham_map_config.json`, the `*.db` files or
 
 - **[JS8Map Spotter 1.76 User Guide](docs/JS8Map_Spotter_1.76_User_Guide.pdf)** -
   the map, the tables, StatReps, MCForms, QSOs and sending.
+- **[Windows Quick Install](docs/JS8Map_Spotter_1.76_Windows_Quick_Install.pdf)** - one page.
 - **[Linux Quick Install](docs/JS8Map_Spotter_1.76_Linux_Quick_Install.pdf)** - one page.
+- **[CHANGELOG.md](CHANGELOG.md)** - what changed in each release.
 - **[ARCHITECTURE.md](ARCHITECTURE.md)** - how the program is built, for
   contributors.
 - **[Request token (TX protection)](docs/Request_Token_TX_Protection.md)** -
@@ -135,8 +145,10 @@ Tests: `python -m unittest discover -s tests` (26 tests) and
 
 Release packages are made only by the scripts, never by hand:
 `tools/make_release.py` (source zip), `build_linux.sh` (Linux package) and
-`Build_JS8Map.bat` (Windows installer). They leave out operator data and
-refuse to finish if any gets in. See ARCHITECTURE.md section 7.
+`build_windows.bat` (Windows installer and portable zip). They leave out
+operator data and refuse to finish if any gets in. See ARCHITECTURE.md
+section 7. Publishing a release on GitHub runs the same scripts
+(`.github/workflows/release.yml`) and attaches their files to the release.
 
 `shared_resolver.py` must stay byte-identical with JS8FastChat's copy
 (`js8fastchat/shared_resolver.py` in JS8MapChat), or the two programs stop
@@ -164,6 +176,6 @@ with or endorsed by the JS8Call project.
 
 Open an issue on the [Issues](https://github.com/HamRadioMadeSimple/JS8MapSpotter/issues)
 tab. Please include the build from the bottom of the StatRep box (for example
-`build 2026-10-29e`), Windows or Linux, your JS8Call version, and a screenshot.
+`build 2026-10-29f`), Windows or Linux, your JS8Call version, and a screenshot.
 
 73 de KW3KW - Ham Made Simple

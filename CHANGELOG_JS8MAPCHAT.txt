@@ -14,6 +14,16 @@ NOTE ON VERSION NUMBERS -- this changelog changes schemes at the 1.6.0 line:
   logs version : 1.6.0).
 
 ─────────────────────────────────────────────────────────────────────
+JS8MAP SPOTTER Ver 1.76   build 2026-10-29f   "build_windows.bat"
+  NEW   build_windows.bat (double-click; work done by tools/build_windows.py):
+        checks version, tags and every file JS8Map.iss installs; downloads
+        PyInstaller once into .buildenv; builds JS8Map.exe; puts the map files
+        beside it; makes ~/Downloads/JS8Map_Spotter_v1.76_build_<tag>_windows.zip
+        (portable, no Python needed) and, when Inno Setup 6 is installed,
+        ..._Setup.exe. Refuses a build tag already in Downloads and any zip
+        holding operator data. Never asks a question.
+  NOTE  Program code is unchanged from 29b.
+─────────────────────────────────────────────────────────────────────
 JS8MAP SPOTTER Ver 1.76   build 2026-10-29e   "build_linux.sh: the file to send"
   NEW   build_linux.sh: sh build_linux.sh  -> ~/Downloads/JS8Map_Spotter_v1.76_build_<tag>_linux.tar.gz
         Ready-to-run package (PyInstaller, downloaded once into .buildenv);

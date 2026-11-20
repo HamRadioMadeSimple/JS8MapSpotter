@@ -14,15 +14,14 @@ JS8Call transmit -- because a test run had left one in the app folder. This
 script is now the only way a release zip is made. It:
 
   1. checks APP_VERSION, STATREP_BUILD and SR_PAGE_BUILD agree with each other
-     and with the folder name ("JS8Map Spotter V<APP_VERSION>");
+     and with the folder name ("Spotter Mapper Ver <APP_VERSION>");
   2. runs the unit tests (skip with --no-tests);
   3. zips the folder, LEAVING OUT operator data and personal files (the list
      below, same as .gitignore plus personal launchers);
   4. re-opens the zip and refuses to finish if any of them got in anyway.
 
 Output: JS8Map_Spotter_Ver_<version>_build_<tag>.zip, folder inside it named
-"JS8Map Spotter V<version>" (was "Spotter Mapper Ver <version>" before
-2026-11-02), so testers unzip over the same folder and keep
+"Spotter Mapper Ver <version>", so testers unzip over the same folder and keep
 their settings. Standard library only; works on Windows and Linux.
 """
 import fnmatch
@@ -44,14 +43,14 @@ EXCLUDE_NAMES = [
     # build output and caches
     '__pycache__', '*.pyc', 'build', 'dist', 'pkgbuild', 'installer_output',
     'map_window_profile', '*.zip', '*.tar.gz', '.buildenv', 'output',
-    # the git repository itself (the program folder is the repo root)
-    '.git', '.github',
     # personal: launchers / folder icon that point at the developer's own paths
     'JS8Map.desktop', 'desktop.ini',
+    # the git repository itself (the program folder is the repo root)
+    '.git', '.github',
 ]
 # Left out of a per-OS zip: the OTHER system's scripts and build files.
 # (js8map_platform/ keeps both modules -- it picks one at import time.)
-WINDOWS_ONLY = ['debug.bat', 'Build_JS8Map.bat', 'JS8Map.iss', 'JS8Map.spec']
+WINDOWS_ONLY = ['debug.bat', 'Build_JS8Map.bat', 'JS8Map.iss', 'JS8Map.spec', 'build_windows.bat']
 LINUX_ONLY = ['debug.sh', 'build_js8map_linux.sh', 'make_js8map_package.sh',
               'JS8Map_linux.spec', 'linux_buildbox', 'install_linux_launcher.sh',
               'update_linux.sh', 'linux_install.sh', 'build_release.sh', 'build_linux.sh']
@@ -90,7 +89,7 @@ def main():
     tag_js = _read('app.js', r"^const SR_PAGE_BUILD\s*=\s*'([^']+)'")
     if tag_py != tag_js:
         sys.exit('STOP: build tags differ -- STATREP_BUILD %s, SR_PAGE_BUILD %s' % (tag_py, tag_js))
-    folder = 'JS8Map Spotter V' + version
+    folder = 'Spotter Mapper Ver ' + version
     if os.path.basename(APP) != folder:
         print('NOTE: this folder is "%s"; the zip will still contain "%s".'
               % (os.path.basename(APP), folder))

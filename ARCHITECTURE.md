@@ -1,8 +1,7 @@
-# JS8Map Spotter: Architecture (Ver 1.76, build 2026-10-29e)
+# JS8Map Spotter: Architecture (Ver 1.76, build 2026-10-29f)
 
-> This describes JS8Map Spotter **as actually built** at build 2026-10-29e
-> (program code as 29b; 29c–29e and 2026-11-02 changed the release and Linux
-> scripts). Spotter is a fork of **JS8Map 1.75** (JS8MapChat 1.75.1, in
+> This describes JS8Map Spotter **as actually built** at build 2026-10-29f
+> (program code as 29b; 29c–29f changed the release and build scripts). Spotter is a fork of **JS8Map 1.75** (JS8MapChat 1.75.1, in
 > [github.com/HamRadioMadeSimple/JS8MapChat](https://github.com/HamRadioMadeSimple/JS8MapChat)),
 > so the JS8MapChat architecture notes cover everything inherited unchanged. This document covers what Spotter adds, what it changes, and the
 > rules that now differ from JS8Map.
@@ -15,6 +14,9 @@
 > **Revised 2026-11-12 for the GitHub repository
 > [github.com/HamRadioMadeSimple/JS8MapSpotter](https://github.com/HamRadioMadeSimple/JS8MapSpotter)**
 > (GPL-3.0): §2, §3.7, §7 and §9 updated; the rest is as of 29a.
+> **Revised 2026-11-20 for build 29f:** `build_windows.bat` added; the
+> 2026-11-02 `~/Applications` Linux layout dropped (§3.7); releases are built by
+> GitHub Actions (§7).
 >
 > **Version numbering:** Spotter was 1.1 → 1.2 → **1.76** (20a, operator
 > 2026-10-20): it is the upgrade of JS8Map 1.75.1. Builds 17e–19c were "1.2";
@@ -80,8 +82,8 @@ JS8FastChat is still a separate app. It coordinates with Spotter through the
 | Item | State |
 |---|---|
 | Version | `APP_NAME = "JS8Map Spotter"`, `APP_VERSION = "1.76"` (js8map_runtime.py) |
-| Build | `2026-10-29e`: `STATREP_BUILD` (js8map_statrep.py) and `SR_PAGE_BUILD` (app.js) must match |
-| Windows | **Installer built and in daily use by the operator** (reported 2026-11-12): `Build_JS8Map.bat` → `JS8Map_Spotter_v1.76_Setup.exe`. Also runs from source (`debug.bat`). |
+| Build | `2026-10-29f`: `STATREP_BUILD` (js8map_statrep.py) and `SR_PAGE_BUILD` (app.js) must match |
+| Windows | **Installer built and in daily use by the operator** (reported 2026-11-12). Since 29f, `build_windows.bat` (work in `tools/build_windows.py`) makes `JS8Map_Spotter_v1.76_build_<tag>_Setup.exe` and a portable `…_windows.zip` in one go; `Build_JS8Map.bat` is the older two-step build. Also runs from source (`debug.bat`). |
 | Linux | **Linux Mint, from source, real JS8Call, tested by the operator through 19c** (from the desktop icon), including the relay legs on the air. Steps to update to 20a were given 2026-10-25 (result not reported). **29a adds `linux_install.sh` and `update_linux.sh`** (§3.7), tested in throwaway home folders, not yet on the operator's PC. The app was also run end-to-end in the cloud test box (Xvfb + openbox + Chromium, fake radio). |
 | Tests | `python -m unittest discover -s tests`: **26 tests**, standard library only; pass on Python 3.12, 3.13 and 3.14. Plus `bash tests/test_linux_scripts.sh`: **28 checks** of the Linux scripts (29d). Both re-run and passing 2026-11-12 in the repository layout. |
 | Python | 3.8 or newer. Standard library only, apart from PyInstaller for builds. |
@@ -207,25 +209,20 @@ users is a **ready-to-run package** that needs no Python:
 | `build_linux.sh` (29e) | `sh build_linux.sh` | Checks version and both build tags; downloads PyInstaller once into `.buildenv/`; builds `dist/JS8Map`; runs `make_js8map_package.sh`; writes `output/JS8Map_Spotter_v<v>_build_<tag>_linux.tar.gz` and copies it to `~/Downloads`. Never asks a question. |
 | `make_js8map_package.sh` | (called by it) | Stages the program and writes `install.sh`, `uninstall.sh` and `README-INSTALL.txt` into the package. |
 
-Data is always kept in `~/.local/share/JS8Map Spotter`. Two package layouts
-exist, and **both are called build 29e**:
-
-- **Released as v1.76** (package built 2026-11-01): unpack in Downloads, run
-  `install.sh`, which copies the program to `~/.local/lib/JS8MapSpotter`. Two
-  lines; this is what `README.md` and
-  `docs/JS8Map_Spotter_1.76_Linux_Quick_Install.pdf` describe.
-- **This repository's `make_js8map_package.sh`** (changed 2026-11-02, never
-  released yet): three lines, the program stays in
-  `~/Applications/JS8Map_Spotter_v<v>_linux`, and `install.sh` offers to remove
-  an old `~/.local/lib/JS8MapSpotter`. **The next Linux release built from this
-  repository uses this layout: update README.md, the Quick Install and the User
-  Guide's Linux steps in the same release.**
+Data is always kept in `~/.local/share/JS8Map Spotter`. The package is
+unpacked in Downloads and its `install.sh` copies the program to
+`~/.local/lib/JS8MapSpotter`: two lines, as in `README.md` and the Linux Quick
+Install. (A three-line `~/Applications` layout was tried in this repository on
+2026-11-02 but never released; it was dropped at 29f, operator decision
+2026-11-20, because the app's own project never carried it.)
 
 **glibc floor.** PyInstaller does not bundle the C library, so the package
 starts only on Linux as new as the PC that built it (built on Mint 22: glibc
-2.38+, which leaves out Ubuntu 22.04, Debian 12, Mint 21 and 20). Building inside
-`linux_buildbox/` (Ubuntu 20.04, podman) brings the floor down to 2.30; see
-`linux_buildbox/BUILD_BOX_NOTES.txt`. Say which in each release's notes.
+2.38+, which leaves out Ubuntu 22.04, Debian 12, Mint 21 and 20). **The GitHub
+release build runs on Ubuntu 22.04 (glibc 2.35): Mint 21, Ubuntu 22.04, Debian
+12 and newer.** Building inside `linux_buildbox/` (Ubuntu 20.04, podman) brings
+the floor down to 2.30; see `linux_buildbox/BUILD_BOX_NOTES.txt`. Say which in
+each release's notes.
 
 ---
 
@@ -464,8 +461,7 @@ These are load-bearing rules, not style preferences.
     `~/.local/share/JS8Map Spotter` (`DATA_FOLDER_NAME`).
   - **Linux package** (`build_linux.sh` → `make_js8map_package.sh`):
     `JS8Map_Spotter_v1.76_build_<tag>_linux.tar.gz`; installs to
-    `~/.local/lib/JS8MapSpotter` (v1.76 release) or runs from
-    `~/Applications/JS8Map_Spotter_v<v>_linux` (next build; §3.7)
+    `~/.local/lib/JS8MapSpotter` (§3.7)
     with `js8map-spotter.desktop`, `js8map-spotter-map.desktop` and
     `JS8Map-Spotter.desktop`. Never touches 1.75's files (tested in a throwaway
     home folder).
@@ -585,8 +581,13 @@ These are load-bearing rules, not style preferences.
   `docs/history/`.
 - **Still to do:** record the source of the border, lakes, admin-1 and places
   JSON in NOTICE.md; ask KF7MIX / SitRepNet that bundling the forms is OK;
-  made-up callsigns in the fake radio; GitHub Actions running the tests on
-  Windows and Linux.
+  made-up callsigns in the fake radio.
+- **GitHub build (29f, 2026-11-20):** `.github/workflows/tests.yml` runs both
+  test sets on Ubuntu 22.04 on every push; `.github/workflows/release.yml`
+  builds the Windows Setup.exe and portable zip (`tools/build_windows.py`) and
+  the Linux package (`build_linux.sh`, Ubuntu 22.04) when a release is
+  published, and attaches them with the guide PDFs from `docs/`. Release notes
+  come from the top section of `CHANGELOG.md`.
 - **Twin across repositories.** `shared_resolver.py` is now in two repositories.
   `Build_JS8Map.bat` looks for `..\check_twins.bat`, which only exists in
   JS8MapChat, so in this repository it warns and skips. Check by hand before a

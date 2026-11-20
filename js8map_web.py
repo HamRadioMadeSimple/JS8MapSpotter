@@ -1106,7 +1106,7 @@ def server_info(port: int, data_dir: str = None) -> dict:
     data_dir (2026-10-19, FastChat db_locator): the absolute folder that holds
     the LIVE js8_spots.db, so FastChat reads it directly instead of guessing
     between copies. A source run keeps its data beside JS8Map.py (e.g. under
-    "Build Versions\\JS8Map Spotter V1.76"); a frozen build uses the per-user
+    "Build Versions\\Spotter Mapper Ver 1.76"); a frozen build uses the per-user
     folder. Older FastChat builds ignore the extra key."""
     return {
         'port': port,

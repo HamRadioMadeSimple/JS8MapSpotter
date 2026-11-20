@@ -5,20 +5,18 @@
 #  Makes the shippable Linux package for JS8Map Spotter.
 #
 #  Spotter is a SEPARATE product from JS8Map 1.75 (operator, 2026-10-17):
-#  it installs to ~/Applications/JS8Map_Spotter_v<x>_linux (2026-11-02; was
-#  ~/.local/lib/JS8MapSpotter, which the installer now offers to remove) with
-#  its own menu files (js8map-spotter*.desktop) and keeps its data in
-#  ~/.local/share/JS8Map Spotter, so an installed JS8Map 1.75 (~/.local/lib/JS8Map,
-#  js8map.desktop) is never touched. The program file keeps its name, JS8Map. (17g)
+#  it installs to ~/.local/lib/JS8MapSpotter with its own menu files
+#  (js8map-spotter*.desktop) and keeps its data in ~/.local/share/JS8Map Spotter,
+#  so an installed JS8Map 1.75 (~/.local/lib/JS8Map, js8map.desktop) is never
+#  touched. The program file keeps its name, JS8Map. (17g)
 #
 #  Run this on the BUILD machine, from the project folder, AFTER a successful
 #  ./build_js8map_linux.sh
 #
 #  Output:  JS8Map_Spotter_v1.76_linux.tar.gz   in the project folder
 #
-#  That single .tar.gz is what goes to another Linux operator. They save it in
-#  Downloads and paste three lines (see README-INSTALL.txt below), which unpack
-#  it into ~/Applications and run install.sh there. No root, no sudo.
+#  That single .tar.gz is what goes to another Linux operator. They unpack it
+#  and run install.sh. No root, no sudo, no package manager.
 # ============================================================================
 
 set -e
@@ -146,75 +144,64 @@ cat > "${STAGE}/install.sh" <<'INSTALL_EOF'
 #  JS8Map Spotter installer for Linux
 #  Installs ALONGSIDE JS8Map 1.75 and never changes it.
 #
-#  The standard way, in a terminal:
-#    F="$(ls -t ~/Downloads/JS8Map_Spotter_*_linux.tar.gz | head -n 1)"
-#    mkdir -p ~/Applications && tar -xzf "$F" -C ~/Applications
-#    bash ~/Applications/"$(tar -tzf "$F" | head -n 1 | cut -d/ -f1)"/install.sh
-#  A newer version installs with the same three lines. The last line runs the
-#  installer in the folder just unpacked, never a guess with *, which would
-#  pick an older version sitting beside it.
+#  Run:   ./install.sh
 #
-#  The program runs from the folder it was unpacked into. ~/Applications is the
-#  standard place for every JS8MapChat app; another folder works too.
-#  No root and no sudo needed. Nothing is written outside your home folder.
-#  Your settings and databases are in ~/.local/share/JS8Map Spotter, never in
-#  the program folder, so installing, updating or removing keeps them.
+#  Installs to your own home folder. No root and no sudo needed.
+#  Nothing is written outside your home folder.
 # ============================================================================
 
 set -e
 
-APPDIR="$(cd "$(dirname "$0")" && pwd)"
-PARENT="$(dirname "${APPDIR}")"
+APPDIR="${HOME}/.local/lib/JS8MapSpotter"
 MENUDIR="${HOME}/.local/share/applications"
 DESKDIR="$(xdg-user-dir DESKTOP 2>/dev/null || echo "${HOME}/Desktop")"
-OLDLIB="${HOME}/.local/lib/JS8MapSpotter"
+SRC="$(cd "$(dirname "$0")" && pwd)"
 
 MAPFILES="leaflet.js leaflet.css js8map_borders.json js8map_admin1.json js8map_lakes.json js8map_places.json"
 
 DATADIR="${XDG_DATA_HOME:-${HOME}/.local/share}/JS8Map Spotter"
 
-ask () {   # ask "question" -> 0 for yes. No terminal -> no.
-    printf '%s [y/N] ' "$1"
-    a=''; { read -r a < /dev/tty; } 2>/dev/null || a=''
-    case "$a" in [Yy]|[Yy][Ee][Ss]) return 0 ;; *) return 1 ;; esac
-}
-
 echo "============================================================"
 echo " Installing JS8Map Spotter"
-echo "   folder: ${APPDIR}"
 echo "============================================================"
 echo ""
 
-# --- never run from inside the app's own data folder ------------------------
+# --- never install on top of the app's own data folder ----------------------
+#     ~/.local/share/JS8Map Spotter is where Spotter keeps settings, databases and the
+#     browser scratch folder. The program must not be unpacked into it.
 if [ "${APPDIR}" = "${DATADIR}" ]; then
-    echo "STOP: this folder is Spotter's data folder."
-    echo "      Unpack the .tar.gz into ~/Applications instead."
+    echo "STOP: the install folder and the data folder are the same."
     echo "      Nothing has been installed."
     exit 1
 fi
 for marker in ham_map_config.json js8_spots.db js8_relay.db map_window_profile; do
     if [ -e "${APPDIR}/${marker}" ]; then
         echo "STOP: ${APPDIR}"
-        echo "      holds JS8Map settings or databases, so it is not a fresh package."
-        echo "      Unpack the .tar.gz into ~/Applications instead."
+        echo "      already holds JS8Map settings or databases."
+        echo "      The program must not be installed on top of them."
         echo "      Nothing has been installed."
         exit 1
     fi
 done
 
 # --- check the package is complete before touching anything -----------------
-if [ ! -f "${APPDIR}/JS8Map" ]; then
+if [ ! -f "${SRC}/JS8Map" ]; then
     echo "STOP: the JS8Map program is missing from this folder."
     echo "      Unpack the whole .tar.gz and run install.sh from inside it."
     exit 1
 fi
 
 MISSING=""
-for f in $MAPFILES build_canadian_db.py; do
-    # build_canadian_db.py: the Canadian step of the first-run wizard runs it,
-    # and looks for it beside the program.
-    [ -f "${APPDIR}/${f}" ] || MISSING="${MISSING} ${f}"
+for f in $MAPFILES; do
+    if [ ! -f "${SRC}/${f}" ]; then
+        MISSING="${MISSING} ${f}"
+    fi
 done
+# build_canadian_db.py is required too -- the Canadian step of the first-run
+# wizard runs it, and looks for it beside the program.
+if [ ! -f "${SRC}/build_canadian_db.py" ]; then
+    MISSING="${MISSING} build_canadian_db.py"
+fi
 if [ -n "$MISSING" ]; then
     echo "STOP: this package is incomplete. Missing:"
     for f in $MISSING; do echo "        ${f}"; done
@@ -222,60 +209,25 @@ if [ -n "$MISSING" ]; then
     exit 1
 fi
 
-# The executable mark can be lost if the package went through a zip.
-chmod 755 "${APPDIR}/JS8Map" "${APPDIR}/install.sh" "${APPDIR}/uninstall.sh" 2>/dev/null || true
+# --- copy the program and the six map files, side by side -------------------
+mkdir -p "${APPDIR}"
+cp "${SRC}/JS8Map" "${APPDIR}/JS8Map"
+chmod 755 "${APPDIR}/JS8Map"
 
-# --- older copies -------------------------------------------------------------
-# Never while Spotter is running: its program file would vanish under it.
-if pgrep -x JS8Map >/dev/null 2>&1; then
-    RUNNING=1
-else
-    RUNNING=0
-fi
-
-ver_of () {   # JS8Map_Spotter_v1.76_linux -> 1.76
-    basename "$1" | sed -n 's/^JS8Map_Spotter_v\(.*\)_linux$/\1/p'
-}
-MY_VER="$(ver_of "${APPDIR}")"
-
-remove_old () {   # remove_old FOLDER -- only ever an OLDER Spotter program folder
-    OLD="$1"
-    [ -f "${OLD}/JS8Map" ] || return 0
-    [ "${OLD}" = "${APPDIR}" ] && return 0
-    V="$(ver_of "${OLD}")"
-    if [ -n "$V" ] && [ -n "$MY_VER" ] \
-       && [ "$(printf '%s\n%s\n' "$V" "$MY_VER" | sort -V | tail -n 1)" = "$V" ]; then
-        echo ""
-        echo "  Left alone, it is the same or newer: ${OLD}"
-        return 0
-    fi
-    for marker in ham_map_config.json js8_spots.db js8_relay.db; do
-        [ -e "${OLD}/${marker}" ] && return 0    # holds data: leave it alone
-    done
-    echo ""
-    echo "  An older JS8Map Spotter is in: ${OLD}"
-    if [ "$RUNNING" = 1 ]; then
-        echo "  Kept, because JS8Map Spotter is running. Close it and run this again"
-        echo "  to remove it. It is harmless; the menu entry points here instead."
-        return 0
-    fi
-    if ask "  Remove it? (your settings are kept)"; then
-        rm -rf "${OLD}" && echo "  Removed."
-    else
-        echo "  Kept. It is harmless; the menu entry points here instead."
-    fi
-}
-# 1.76 and earlier installed by copying into ~/.local/lib/JS8MapSpotter
-remove_old "${OLDLIB}"
-# earlier versions unpacked beside this one, e.g. JS8Map_Spotter_v1.75_linux
-for d in "${PARENT}"/JS8Map_Spotter_v*_linux; do
-    [ -d "$d" ] && remove_old "$d"
+for f in $MAPFILES; do
+    cp "${SRC}/${f}" "${APPDIR}/${f}"
 done
 
+# the Canadian database builder, beside the program where js8map_fcc.py looks
+cp "${SRC}/build_canadian_db.py" "${APPDIR}/build_canadian_db.py"
+
 ICON_LINE=""
-if [ -f "${APPDIR}/js8map-spotter.png" ]; then
+if [ -f "${SRC}/js8map-spotter.png" ]; then
+    cp "${SRC}/js8map-spotter.png" "${APPDIR}/js8map-spotter.png"
     ICON_LINE="Icon=${APPDIR}/js8map-spotter.png"
 fi
+
+echo "Installed to: ${APPDIR}"
 
 # --- build the launcher -----------------------------------------------------
 make_launcher () {
@@ -300,8 +252,6 @@ DESKTOP_EOF
 
 # applications menu -- Spotter's OWN file names (same as
 # tools/install_linux_launcher.sh). JS8Map 1.75's js8map.desktop is left alone.
-# Writing them again re-points them at this folder, which is how an update
-# moves the menu entry to the new version.
 mkdir -p "${MENUDIR}"
 make_launcher "${MENUDIR}/js8map-spotter.desktop"
 
@@ -327,28 +277,31 @@ fi
 
 update-desktop-database "${MENUDIR}" 2>/dev/null || true
 
-# --- prove what is there ------------------------------------------------------
+# --- prove what actually landed ---------------------------------------------
+echo ""
+echo "------------------------------------------------------------"
+echo " Contents of ${APPDIR}"
+echo "------------------------------------------------------------"
+ls -1 "${APPDIR}"
+echo "------------------------------------------------------------"
+echo ""
+
 COUNT=0
 for f in $MAPFILES; do
-    [ -f "${APPDIR}/${f}" ] && COUNT=$((COUNT + 1))
+    if [ -f "${APPDIR}/${f}" ]; then
+        COUNT=$((COUNT + 1))
+    fi
 done
 
-echo ""
 if [ "$COUNT" -eq 6 ] && [ -x "${APPDIR}/JS8Map" ] \
-   && [ -f "${APPDIR}/build_canadian_db.py" ] \
-   && grep -q "${APPDIR}/JS8Map" "${MENUDIR}/js8map-spotter.desktop"; then
-    echo "DONE. JS8Map Spotter is installed in:"
-    echo "    ${APPDIR}"
-    echo "The menu entry and desktop icon point there."
+   && [ -f "${APPDIR}/build_canadian_db.py" ]; then
+    echo "DONE. JS8Map Spotter is installed and all six map files are beside it."
+    echo ""
+    echo "Start it from the applications menu, from the desktop icon,"
+    echo "or by running:  ${APPDIR}/JS8Map"
 else
     echo "WARNING: the install finished but the folder above does not look right."
 fi
-echo ""
-echo "Next:"
-echo "  1. In JS8Call: File > Settings > Reporting -- tick Enable TCP Server API and"
-echo "     Accept TCP Requests, port 2442, TCP Max Connections 5. Restart JS8Call."
-echo "  2. Start it from the applications menu or the desktop icon."
-echo "  3. A newer version later: close Spotter and paste the same install lines."
 echo ""
 INSTALL_EOF
 chmod 755 "${STAGE}/install.sh"
@@ -361,30 +314,21 @@ cat > "${STAGE}/uninstall.sh" <<'UNINSTALL_EOF'
 # ============================================================================
 #  JS8Map Spotter uninstaller for Linux (JS8Map 1.75 is not touched)
 #
-#  Run:   bash ~/Applications/JS8Map_Spotter_*_linux/uninstall.sh
+#  Run:   ./uninstall.sh
 #
-#  Removes this program folder and its launchers, and the old
-#  ~/.local/lib/JS8MapSpotter copy if there is one.
+#  Removes the installed program and its launchers.
 #  Your settings and databases are NOT touched.
 # ============================================================================
 
 set -e
 
-APPDIR="$(cd "$(dirname "$0")" && pwd)"
-OLDLIB="${HOME}/.local/lib/JS8MapSpotter"
+APPDIR="${HOME}/.local/lib/JS8MapSpotter"
 MENUDIR="${HOME}/.local/share/applications"
 DESKDIR="$(xdg-user-dir DESKTOP 2>/dev/null || echo "${HOME}/Desktop")"
 DATADIR="${XDG_DATA_HOME:-${HOME}/.local/share}/JS8Map Spotter"
 
-# Only ever delete a Spotter program folder, never a data folder.
-if [ ! -f "${APPDIR}/JS8Map" ] || [ "${APPDIR}" = "${DATADIR}" ]; then
-    echo "STOP: run this from the JS8Map Spotter program folder."
-    exit 1
-fi
-
 echo "This will remove:"
 echo "    ${APPDIR}"
-[ -f "${OLDLIB}/JS8Map" ] && echo "    ${OLDLIB}"
 echo "    ${MENUDIR}/js8map-spotter.desktop"
 echo "    ${MENUDIR}/js8map-spotter-map.desktop"
 echo "    ${DESKDIR}/JS8Map-Spotter.desktop"
@@ -407,11 +351,10 @@ case "$ANSWER" in
         ;;
 esac
 
+rm -rf "${APPDIR}"
 rm -f "${MENUDIR}/js8map-spotter.desktop" "${MENUDIR}/js8map-spotter-map.desktop"
 rm -f "${DESKDIR}/JS8Map-Spotter.desktop"
 update-desktop-database "${MENUDIR}" 2>/dev/null || true
-[ -f "${OLDLIB}/JS8Map" ] && rm -rf "${OLDLIB}"
-rm -rf "${APPDIR}"
 
 echo ""
 echo "DONE. JS8Map Spotter has been removed."
@@ -427,36 +370,26 @@ JS8Map Spotter 1.76 for Linux
 =============================
 
 Installs alongside JS8Map 1.75 and does not change it.
-No root password is needed. Everything stays inside your own home folder.
-
 
 TO INSTALL
 ----------
-Save the .tar.gz in your Downloads folder. Open a terminal (Ctrl+Alt+T),
-paste these three lines and press Enter:
+1. Open a terminal in this folder.
+2. Type:    ./install.sh
+3. Press Enter.
 
-    F="$(ls -t ~/Downloads/JS8Map_Spotter_*_linux.tar.gz | head -n 1)"
-    mkdir -p ~/Applications && tar -xzf "$F" -C ~/Applications
-    bash ~/Applications/"$(tar -tzf "$F" | head -n 1 | cut -d/ -f1)"/install.sh
+That is all. No root password is needed. Everything is installed inside
+your own home folder.
 
-When it finishes, JS8Map Spotter is in your applications menu and has an
+When it finishes you will have JS8Map Spotter in your applications menu and an
 icon on your desktop.
 
 
-TO UPDATE
----------
-Close JS8Map Spotter, save the new .tar.gz in Downloads, and paste the same
-three lines. Answer y when it offers to remove the older version. Your
-settings are kept.
-
-
-BEFORE YOU START IT
--------------------
-In JS8Call, open File > Settings > Reporting. Tick Enable TCP Server API and
-Accept TCP Requests, port 2442, and set TCP Max Connections to 5. Restart
-JS8Call. Each program talking to JS8Call takes one connection: JS8Map,
-JS8FastChat, and anything else such as JS8Spotter or CommStat. At 1 there are
-not enough to go round, and a refused connection is silent.
+BEFORE YOU RUN IT
+-----------------
+In JS8Call, open File > Settings > Reporting and set
+TCP Max Connections to 5. JS8Call ships with this set to 1, and each
+program that talks to JS8Call (Spotter, JS8FastChat, JS8Spotter, CommStat)
+takes one connection.
 
 
 THE MAP WORKS OFFLINE
@@ -469,7 +402,7 @@ only thing that needs a connection, and it is optional.
 
 TO REMOVE IT
 ------------
-    bash ~/Applications/JS8Map_Spotter_*_linux/uninstall.sh
+Open a terminal in this folder and type:    ./uninstall.sh
 
 Your settings and logs are left alone.
 README_EOF

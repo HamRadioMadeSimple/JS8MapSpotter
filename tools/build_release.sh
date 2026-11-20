@@ -5,7 +5,7 @@
 #   sh tools/build_release.sh <folder>   (zip goes to <folder> instead)
 #
 # It never asks a question and never waits for a key. In order, it:
-#   1. checks it is in a "JS8Map Spotter V<x>" folder and that python3,
+#   1. checks it is in a "Spotter Mapper Ver <x>" folder and that python3,
 #      unzip and bash are present;
 #   2. shows the version and the two build tags (STATREP_BUILD in
 #      js8map_statrep.py, SR_PAGE_BUILD in app.js) and stops if they differ;
@@ -30,7 +30,7 @@ export JS8MAP_ASSUME_NO=1          # the install/update scripts never prompt
 
 # --- 1. where and what --------------------------------------------------------
 [ -f JS8Map.py ] && [ -f tools/make_release.py ] || stop "run this inside the program folder:
-      cd ~/build/spotter/\"JS8Map Spotter V1.76\" && sh tools/build_release.sh"
+      cd ~/build/spotter/\"Spotter Mapper Ver 1.76\" && sh tools/build_release.sh"
 for c in python3 unzip bash; do
     command -v "$c" >/dev/null 2>&1 || stop "'$c' is missing:  sudo apt install $c"
 done
@@ -48,7 +48,7 @@ say "  zip to:   $OUT"
 [ -n "$VERSION" ] && [ -n "$TAG_PY" ] && [ -n "$TAG_JS" ] || stop "could not read the version or a build tag"
 [ "$TAG_PY" = "$TAG_JS" ] || stop "the two build tags differ -- make them the same:
       STATREP_BUILD in js8map_statrep.py and SR_PAGE_BUILD in app.js"
-[ "$(basename "$APP")" = "JS8Map Spotter V$VERSION" ] || stop "the folder must be named \"JS8Map Spotter V$VERSION\" (it is \"$(basename "$APP")\")"
+[ "$(basename "$APP")" = "Spotter Mapper Ver $VERSION" ] || stop "the folder must be named \"Spotter Mapper Ver $VERSION\" (it is \"$(basename "$APP")\")"
 
 # --- 3. same tag already built? -----------------------------------------------
 for z in "$OUT"/JS8Map_Spotter_Ver_*_build_"$TAG_PY"*.zip; do

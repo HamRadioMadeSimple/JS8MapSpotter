@@ -2,7 +2,7 @@
 # linux_install.sh -- first-time setup of JS8Map Spotter on Linux.
 #
 #   unzip ~/Downloads/JS8Map_Spotter_Ver_*_build_*.zip -d ~/JS8MapSpotter
-#   sh ~/JS8MapSpotter/*Spotter*/linux_install.sh
+#   sh ~/JS8MapSpotter/Spotter*/linux_install.sh
 #
 # What it does (2026-10-29):
 #   1. checks for Python 3.8+ with Tk (needed), and unzip and wmctrl
@@ -96,5 +96,5 @@ say "     Accept TCP Requests, port 2442, TCP Max Connections 5. Restart JS8Call
 say "  2. Start JS8Map Spotter from the desktop icon (or the menu, Ham Radio)."
 say "     The first time, a setup wizard downloads the FCC callsign database."
 say "  3. Later updates: save the new zip in Downloads, close Spotter, then run"
-say "       sh ~/JS8MapSpotter/*Spotter*/update_linux.sh"
+say "       sh ~/JS8MapSpotter/Spotter*/update_linux.sh"
 say "     (if you unzipped somewhere else, use that folder instead of ~/JS8MapSpotter)."

@@ -19,7 +19,7 @@ T="$(mktemp -d)"; trap 'rm -rf "$T"' EXIT
 mkdir -p "$T/zips" "$T/bin"
 python3 "$APP/tools/make_release.py" "$T/zips" --no-tests >/dev/null || { echo "could not build a zip"; exit 1; }
 Z="$(ls "$T"/zips/JS8Map_Spotter_Ver_*_build_*.zip | head -n 1)"
-VER="$(basename "$(unzip -Z1 "$Z" | head -n 1 | cut -d/ -f1)")"            # "JS8Map Spotter VX"
+VER="$(basename "$(unzip -Z1 "$Z" | head -n 1 | cut -d/ -f1)")"            # "Spotter Mapper Ver X"
 TAG="$(unzip -p "$Z" "$VER/js8map_statrep.py" | grep -o "STATREP_BUILD = '[^']*'" | cut -d"'" -f2)"
 BASE="$(basename "$Z" .zip)"
 # a python that has Tk (for the install case), and one that pretends not to
@@ -78,7 +78,7 @@ out=$(HOME="$H" sh "$OLD/update_linux.sh" </dev/null 2>&1); rc=$?
 N="$H/JS8MapSpotter/${VER}"
 [ $rc -eq 0 ] && ok "update finished" || bad "update rc=$rc: $out"
 echo "$out" | grep -q "_Windows" && bad "picked the Windows zip" || ok "ignored the newer _Windows zip"
-[ -d "$N" ] && [ ! -e "$OLD" ] && ok "folder renamed Ver 1.2 -> ${VER#JS8Map Spotter }" || bad "rename"
+[ -d "$N" ] && [ ! -e "$OLD" ] && ok "folder renamed Ver 1.2 -> ${VER#Spotter Mapper }" || bad "rename"
 [ "$(cat "$N/ham_map_config.json")" = '{"callsign":"KW3KW"}' ] && [ -f "$N/js8_spots.db" ] && [ "$(cat "$N/js8map_request_token.txt")" = mytoken ] && ok "settings, database and own token kept" || bad "data lost"
 grep -q "'${TAG}'" "$N/js8map_statrep.py" && ok "now build ${TAG}" || bad "build"
 grep -q "${VER}/debug.sh" "$H/.local/share/applications/js8map-spotter.desktop" && grep -q "${VER}" "$H/Desktop/JS8Map-Spotter.desktop" && ok "menu + desktop icon re-pointed" || bad "launchers not re-pointed"
@@ -119,7 +119,7 @@ out=$(HOME="$H" sh "$H/JS8MapSpotter/${VER}/update_linux.sh" "$T/junk.zip" </dev
 [ $rc -ne 0 ] && echo "$out" | grep -q "not a JS8Map Spotter zip" && ok "junk zip refused" || bad "junk: $out"
 
 echo "== K. run with the shell glob from the guide"
-out=$(cd /; HOME="$H" sh -c 'sh "$HOME"/JS8MapSpotter/*Spotter*/update_linux.sh' 2>&1 </dev/null); rc=$?
+out=$(cd /; HOME="$H" sh -c 'sh "$HOME"/JS8MapSpotter/Spotter*/update_linux.sh' 2>&1 </dev/null); rc=$?
 echo "$out" | grep -q "both\|ignoring" && ok "glob with two folders: stops cleanly ($(echo "$out" | grep -c ignoring) ignored)" || bad "glob: $out"
 
 echo "== L. run from a BUILD folder, nothing installed -> first install (29c)"
