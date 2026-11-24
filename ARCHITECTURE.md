@@ -584,7 +584,8 @@ These are load-bearing rules, not style preferences.
   made-up callsigns in the fake radio.
 - **GitHub build (29f, 2026-11-20):** `.github/workflows/tests.yml` runs both
   test sets on Ubuntu 22.04 on every push; `.github/workflows/release.yml`
-  builds the Windows Setup.exe and portable zip (`tools/build_windows.py`) and
+  builds the Windows Setup.exe (`tools/build_windows.py`; the portable zip it
+  also makes is not published since 2026-11-24) and
   the Linux package (`build_linux.sh`, Ubuntu 22.04) when a release is
   published, and attaches them (the guide PDFs stay in `docs/`, not on the
   release, since 2026-11-24). Release notes

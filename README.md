@@ -59,12 +59,8 @@ Start order: **JS8Call, then JS8Map Spotter, then JS8FastChat** if you use it.
 
 To update, download the newer `Setup.exe` and run it. Your settings are kept.
 
-**No installer?** Download `JS8Map_Spotter_v1.76_build_2026-10-29f_windows.zip`
-instead, right-click it > **Properties** > tick **Unblock** if shown, then
-**Extract All…** into Documents and double-click `JS8Map.exe`.
-
 The one-page [Windows Quick Install](docs/JS8Map_Spotter_1.76_Windows_Quick_Install.pdf)
-has both ways, the JS8Call settings and troubleshooting.
+has the steps, the JS8Call settings and troubleshooting.
 
 ## Install on Linux
 
@@ -147,7 +143,7 @@ Tests: `python -m unittest discover -s tests` (26 tests) and
 
 Release packages are made only by the scripts, never by hand:
 `tools/make_release.py` (source zip), `build_linux.sh` (Linux package) and
-`build_windows.bat` (Windows installer and portable zip). They leave out
+`build_windows.bat` (Windows installer). They leave out
 operator data and refuse to finish if any gets in. See ARCHITECTURE.md
 section 7. Publishing a release on GitHub runs the same scripts
 (`.github/workflows/release.yml`) and attaches their files to the release.

@@ -9,8 +9,7 @@ First release on GitHub.
 
 - **Ready-to-run downloads, no Python needed:**
   - Windows 10 / 11: `JS8Map_Spotter_v1.76_build_2026-10-29f_Setup.exe`
-    (installer) or `JS8Map_Spotter_v1.76_build_2026-10-29f_windows.zip`
-    (portable: unzip, double-click `JS8Map.exe`).
+    (installer).
   - Linux: `JS8Map_Spotter_v1.76_build_2026-10-29f_linux.tar.gz`, for Linux
     Mint 21, Ubuntu 22.04, Debian 12 or newer on a 64-bit PC. Installs with two
     terminal lines (see the Linux Quick Install).

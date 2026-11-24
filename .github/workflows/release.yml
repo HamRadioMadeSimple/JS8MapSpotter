@@ -1,4 +1,4 @@
-# Making a tag like v1.76 (on the Releases page) builds the Windows Setup.exe and portable zip
+# Making a tag like v1.76 (on the Releases page) builds the Windows Setup.exe
 # and the Linux .tar.gz, then attaches them to that release (the guide PDFs stay in docs/).
 # (Actions > Release > Run workflow also builds them for testing, without a release.)
 name: Release
@@ -21,18 +21,17 @@ jobs:
           python-version: "3.12"
       - name: Install Inno Setup (for the installer)
         run: choco install innosetup -y --no-progress
-      - name: Build the Setup.exe and the portable zip
+      - name: Build the Setup.exe
         # build_windows.bat only finds Python and then waits for a key; call its worker directly.
         run: python tools/build_windows.py
-      - name: Check both files were made
+      - name: Check the Setup.exe was made
         shell: bash
-        run: ls -l output/JS8Map_Spotter_v*_Setup.exe output/JS8Map_Spotter_v*_windows.zip
+        run: ls -l output/JS8Map_Spotter_v*_Setup.exe
       - uses: actions/upload-artifact@v4
         with:
           name: windows
           path: |
             output/JS8Map_Spotter_v*_Setup.exe
-            output/JS8Map_Spotter_v*_windows.zip
 
   linux:
     # Built on Ubuntu 22.04 (glibc 2.35), so the package runs on Mint 21, Ubuntu 22.04, Debian 12 and newer.
@@ -75,7 +74,6 @@ jobs:
             echo "| System | File | How to install |"
             echo "|---|---|---|"
             echo "| Windows 10/11 | \`JS8Map_Spotter_v${V}_build_${TAG}_Setup.exe\` | Double-click, Next, Install. Updating keeps your settings. |"
-            echo "| Windows (no install) | \`JS8Map_Spotter_v${V}_build_${TAG}_windows.zip\` | Extract All into Documents, double-click \`JS8Map.exe\`. |"
             echo "| Linux (Mint 21 / Ubuntu 22.04 or newer) | \`JS8Map_Spotter_v${V}_build_${TAG}_linux.tar.gz\` | Save it in Downloads and paste the two lines from the Linux Quick Install. |"
             echo ""
             echo "If Windows says \"Windows protected your PC\", click **More info > Run anyway**. The program isn't code-signed."
@@ -99,5 +97,4 @@ jobs:
           make_latest: true
           files: |
             out/windows/JS8Map_Spotter_v*_Setup.exe
-            out/windows/JS8Map_Spotter_v*_windows.zip
             out/linux/JS8Map_Spotter_v*_linux.tar.gz
