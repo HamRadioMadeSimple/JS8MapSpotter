@@ -1,5 +1,7 @@
 # JS8Map Spotter
 
+**Windows and Linux** · [Download](https://github.com/HamRadioMadeSimple/JS8MapSpotter/releases/latest) · [Guides](docs) · [Video](https://youtu.be/P38tYfbgYMI) · [Website](https://hamradiomadesimple.github.io/)
+
 A live map of every station [JS8Call](https://js8call.com) hears, with the
 emergency-communications traffic on top:
 
