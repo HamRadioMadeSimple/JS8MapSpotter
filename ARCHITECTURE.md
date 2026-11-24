@@ -586,7 +586,8 @@ These are load-bearing rules, not style preferences.
   test sets on Ubuntu 22.04 on every push; `.github/workflows/release.yml`
   builds the Windows Setup.exe and portable zip (`tools/build_windows.py`) and
   the Linux package (`build_linux.sh`, Ubuntu 22.04) when a release is
-  published, and attaches them with the guide PDFs from `docs/`. Release notes
+  published, and attaches them (the guide PDFs stay in `docs/`, not on the
+  release, since 2026-11-24). Release notes
   come from the top section of `CHANGELOG.md`.
 - **`update_linux.sh` Downloads fix (GitHub only, 2026-11-20):** when no
   Downloads folder is set up, `xdg-user-dir DOWNLOAD` answers with the home

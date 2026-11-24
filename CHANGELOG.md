@@ -21,7 +21,8 @@ First release on GitHub.
   Station display**, so the filter bar fits on one line; the Find box widens
   when clicked.
 - **New guides:** Windows Quick Install, Linux Quick Install and an updated
-  User Guide (PDF, attached below and in the `docs` folder).
+  User Guide (PDF, in the
+  [docs](https://github.com/HamRadioMadeSimple/JS8MapSpotter/tree/main/docs) folder).
 - **JS8Call setting:** TCP Max Connections **5** (each program that talks to
   JS8Call takes one).
 

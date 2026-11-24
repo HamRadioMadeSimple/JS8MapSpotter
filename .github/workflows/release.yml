@@ -1,5 +1,5 @@
 # Making a tag like v1.76 (on the Releases page) builds the Windows Setup.exe and portable zip
-# and the Linux .tar.gz, then attaches them and the guide PDFs to that release.
+# and the Linux .tar.gz, then attaches them to that release (the guide PDFs stay in docs/).
 # (Actions > Release > Run workflow also builds them for testing, without a release.)
 name: Release
 
@@ -80,7 +80,7 @@ jobs:
             echo ""
             echo "If Windows says \"Windows protected your PC\", click **More info > Run anyway**. The program isn't code-signed."
             echo ""
-            echo "Guides (PDF, attached below): Windows Quick Install, Linux Quick Install and the User Guide."
+            echo "Guides (PDF): Windows Quick Install, Linux Quick Install and the User Guide, in the [docs]($R/tree/main/docs) folder."
             echo "In JS8Call set **TCP Max Connections** to **5** and restart it."
             echo ""
             echo "## What's new"
@@ -101,5 +101,3 @@ jobs:
             out/windows/JS8Map_Spotter_v*_Setup.exe
             out/windows/JS8Map_Spotter_v*_windows.zip
             out/linux/JS8Map_Spotter_v*_linux.tar.gz
-            docs/JS8Map_Spotter_*_Quick_Install.pdf
-            docs/JS8Map_Spotter_*_User_Guide.pdf
