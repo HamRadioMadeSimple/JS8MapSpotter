@@ -1,8 +1,8 @@
 # JS8Map Spotter: Architecture (Ver 1.76, build 2026-10-29f)
 
 > This describes JS8Map Spotter **as actually built** at build 2026-10-29f
-> (program code as 29b; 29c–29f changed the release and build scripts). Spotter is a fork of **JS8Map 1.75** (JS8MapChat 1.75.1, in
-> [github.com/HamRadioMadeSimple/JS8MapChat](https://github.com/HamRadioMadeSimple/JS8MapChat)),
+> (program code as 29b; 29c–29f changed the release and build scripts). Spotter is a fork of **JS8Map 1.75** (JS8MapChat 1.75.1, formerly in the JS8MapChat repository, now
+> [github.com/HamRadioMadeSimple/JS8FastChat](https://github.com/HamRadioMadeSimple/JS8FastChat), which no longer carries JS8Map)),
 > so the JS8MapChat architecture notes cover everything inherited unchanged. This document covers what Spotter adds, what it changes, and the
 > rules that now differ from JS8Map.
 >
@@ -596,7 +596,8 @@ These are load-bearing rules, not style preferences.
   28 checks failed there). Bring this file back to the app's project.
 - **Twin across repositories.** `shared_resolver.py` is now in two repositories.
   `Build_JS8Map.bat` looks for `..\check_twins.bat`, which only exists in
-  JS8MapChat, so in this repository it warns and skips. Check by hand before a
+  JS8FastChat (named JS8MapChat until 2026-11-24; it now compares the newest
+  `JS8Map Spotter V*` folder beside it with FastChat), so in this repository it warns and skips. Check by hand before a
   release, or point JS8FastChat's `tools/twin_path.txt` at this repository's
   `shared_resolver.py`.
 

@@ -26,7 +26,7 @@ Current version: **1.76** (build 2026-10-29f). Windows and Linux.
 
 JS8Map Spotter installs **alongside JS8Map 1.75** and does not change it: own
 folder, settings, icon and taskbar button. It works with
-**[JS8FastChat](https://github.com/HamRadioMadeSimple/JS8MapChat)** for per-station chat.
+**[JS8FastChat](https://github.com/HamRadioMadeSimple/JS8FastChat)** for per-station chat.
 
 ---
 
@@ -153,7 +153,7 @@ section 7. Publishing a release on GitHub runs the same scripts
 (`.github/workflows/release.yml`) and attaches their files to the release.
 
 `shared_resolver.py` must stay byte-identical with JS8FastChat's copy
-(`js8fastchat/shared_resolver.py` in JS8MapChat), or the two programs stop
+(`js8fastchat/shared_resolver.py` in JS8FastChat), or the two programs stop
 finding each other, with no error. Change both or neither.
 
 ## Credits
