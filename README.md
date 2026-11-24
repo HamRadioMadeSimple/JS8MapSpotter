@@ -122,7 +122,7 @@ report a problem, please don't send `ham_map_config.json`, the `*.db` files or
 - **[CHANGELOG.md](CHANGELOG.md)** - what changed in each release.
 - **[ARCHITECTURE.md](ARCHITECTURE.md)** - how the program is built, for
   contributors.
-- **[Request token (TX protection)](docs/Request_Token_TX_Protection.md)** -
+- **[Request token (TX protection)](dev/Request_Token_TX_Protection.md)** -
   how the map's send buttons are protected.
 
 ## Hot keys (on the map)

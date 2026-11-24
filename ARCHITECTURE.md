@@ -578,7 +578,7 @@ These are load-bearing rules, not style preferences.
   `js8map_fastchat.py` "from KW3KW" fallback is now blank; `.git` left out of
   release zips; build output added to `.gitignore`; TCP Max Connections 5
   everywhere; `BUILD_NOTES.txt` and `INSTALL_FastChat_Button.txt` moved to
-  `docs/history/`.
+  `dev/history/`.
 - **Still to do:** record the source of the border, lakes, admin-1 and places
   JSON in NOTICE.md; ask KF7MIX / SitRepNet that bundling the forms is OK;
   made-up callsigns in the fake radio.
